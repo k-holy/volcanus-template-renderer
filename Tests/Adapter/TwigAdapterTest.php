@@ -62,7 +62,7 @@ class TwigAdapterTest extends \PHPUnit_Framework_TestCase
 
 	public function testFetch()
 	{
-		$adapter = new TwigAdapter(array(
+		$adapter = new TwigAdapter(null, array(
 			'path' => $this->path,
 		));
 

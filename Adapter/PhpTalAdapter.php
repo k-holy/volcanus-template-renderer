@@ -42,22 +42,24 @@ class PhpTalAdapter implements AdapterInterface
 	/**
 	 * コンストラクタ
 	 *
+	 * @param \PHPTAL
 	 * @param array 設定オプション
 	 */
-	public function __construct(array $configurations = array())
+	public function __construct(\PHPTAL $phptal = null, array $configurations = array())
 	{
-		$this->initialize($configurations);
+		$this->initialize($phptal, $configurations);
 	}
 
 	/**
 	 * オブジェクトを初期化します。
 	 *
+	 * @param \PHPTAL
 	 * @param array 設定オプション
 	 * @return self
 	 */
-	public function initialize(array $configurations = array())
+	public function initialize($phptal = null, array $configurations = array())
 	{
-		$this->phptal = new \PHPTAL();
+		$this->setPhpTal(isset($phptal) ? $phptal : new \PHPTAL());
 		$this->config = array_fill_keys(static::$phptal_options, null);
 		if (!empty($configurations)) {
 			foreach ($configurations as $name => $value) {
@@ -65,6 +67,11 @@ class PhpTalAdapter implements AdapterInterface
 			}
 		}
 		return $this;
+	}
+
+	private function setPhpTal(\PHPTAL $phptal)
+	{
+		$this->phptal = $phptal;
 	}
 
 	/**
@@ -122,6 +129,12 @@ class PhpTalAdapter implements AdapterInterface
 				sprintf('The config parameter "%s" is not defined.', $name)
 			);
 		}
+		if (isset($value) && in_array($name, static::$phptal_options)) {
+			$method = 'set' . ucfirst($name);
+			if (method_exists($this->phptal, $method)) {
+				$this->phptal->{$method}($value);
+			}
+		}
 		$this->config[$name] = $value;
 		return $this;
 	}
@@ -135,28 +148,6 @@ class PhpTalAdapter implements AdapterInterface
 	 */
 	public function fetch($view, array $data = array())
 	{
-		foreach ($this->config as $name => $value) {
-			if (isset($value) && in_array($name, static::$phptal_options)) {
-				$method = 'set' . ucfirst($name);
-				if (!method_exists($this->phptal, $method)) {
-					throw new \InvalidArgumentException(
-						sprintf('The accessor method to "%s" is not defined.', $name));
-				}
-				switch ($name) {
-				case 'phpCodeDestination':
-				case 'templateRepository':
-					if ('\\' === DIRECTORY_SEPARATOR) {
-						$value = (is_array($value))
-							? array_map(function($val) {
-								return str_replace('\\', '/', $val);
-							}, $value)
-							: str_replace('\\', '/', $value);
-					}
-					break;
-				}
-				$this->phptal->{$method}($value);
-			}
-		}
 		if (strpos($view, '/') === 0) {
 			$view = substr($view, 1);
 		}

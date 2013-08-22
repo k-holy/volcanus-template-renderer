@@ -47,22 +47,24 @@ class SmartyAdapter implements AdapterInterface
 	/**
 	 * コンストラクタ
 	 *
+	 * @param \Smarty
 	 * @param array 設定オプション
 	 */
-	public function __construct(array $configurations = array())
+	public function __construct(\Smarty $smarty = null, array $configurations = array())
 	{
-		$this->initialize($configurations);
+		$this->initialize($smarty, $configurations);
 	}
 
 	/**
 	 * オブジェクトを初期化します。
 	 *
+	 * @param \Smarty
 	 * @param array 設定オプション
 	 * @return self
 	 */
-	public function initialize(array $configurations = array())
+	public function initialize($smarty = null, array $configurations = array())
 	{
-		$this->smarty = new \Smarty();
+		$this->setSmarty(isset($smarty) ? $smarty : new \Smarty());
 		$this->config = array_fill_keys(static::$smarty_options, null) + array(
 			'defaultLayout' => null,
 		);
@@ -72,6 +74,11 @@ class SmartyAdapter implements AdapterInterface
 			}
 		}
 		return $this;
+	}
+
+	private function setSmarty(\Smarty $smarty)
+	{
+		$this->smarty = $smarty;
 	}
 
 	/**
@@ -129,6 +136,9 @@ class SmartyAdapter implements AdapterInterface
 				sprintf('The config parameter "%s" is not defined.', $name)
 			);
 		}
+		if (isset($value) && in_array($name, static::$smarty_options)) {
+			$this->smarty->{$name} = $value;
+		}
 		$this->config[$name] = $value;
 		return $this;
 	}
@@ -142,26 +152,6 @@ class SmartyAdapter implements AdapterInterface
 	 */
 	public function fetch($view, array $data = array())
 	{
-		foreach ($this->config as $name => $value) {
-			if (isset($value) && in_array($name, static::$smarty_options)) {
-				switch ($name) {
-				case 'template_dir':
-				case 'config_dir':
-				case 'plugins_dir':
-				case 'compile_dir':
-				case 'cache_dir':
-					if ('\\' === DIRECTORY_SEPARATOR) {
-						$value = (is_array($value))
-							? array_map(function($val) {
-								return str_replace('\\', '/', $val);
-							}, $value)
-							: str_replace('\\', '/', $value);
-					}
-					break;
-				}
-				$this->smarty->{$name} = $value;
-			}
-		}
 		if (strpos($view, '/') === 0) {
 			$view = substr($view, 1);
 		}

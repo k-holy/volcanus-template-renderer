@@ -19,9 +19,10 @@ interface AdapterInterface
 	/**
 	 * オブジェクトを初期化します。
 	 *
+	 * @param mixed テンプレートエンジンのインスタンス
 	 * @param array 設定オプション
 	 */
-	public function initialize(array $configurations = array());
+	public function initialize($engine = null, array $configurations = array());
 
 	/**
 	 * 指定された設定値をセットします。

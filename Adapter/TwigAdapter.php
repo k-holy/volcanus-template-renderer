@@ -44,22 +44,24 @@ class TwigAdapter implements AdapterInterface
 	/**
 	 * コンストラクタ
 	 *
+	 * @param \Twig_Environment
 	 * @param array 設定オプション
 	 */
-	public function __construct(array $configurations = array())
+	public function __construct(\Twig_Environment $twig = null, array $configurations = array())
 	{
-		$this->initialize($configurations);
+		$this->initialize($twig, $configurations);
 	}
 
 	/**
 	 * オブジェクトを初期化します。
 	 *
+	 * @param \Twig_Environment
 	 * @param array 設定オプション
 	 * @return self
 	 */
-	public function initialize(array $configurations = array())
+	public function initialize($twig = null, array $configurations = array())
 	{
-		$this->twig = new \Twig_Environment();
+		$this->setTwig(isset($twig) ? $twig : new \Twig_Environment());
 		$this->config = array_fill_keys(static::$twig_options, null);
 		if (!empty($configurations)) {
 			foreach ($configurations as $name => $value) {
@@ -67,6 +69,11 @@ class TwigAdapter implements AdapterInterface
 			}
 		}
 		return $this;
+	}
+
+	private function setTwig(\Twig_Environment $twig)
+	{
+		$this->twig = $twig;
 	}
 
 	/**
@@ -136,6 +143,50 @@ class TwigAdapter implements AdapterInterface
 				sprintf('The config parameter "%s" is not defined.', $name)
 			);
 		}
+		if (isset($value) && in_array($name, static::$twig_options)) {
+			switch ($name) {
+			case 'debug':
+				if ($value) {
+					$this->twig->enableDebug();
+					$this->twig->addExtension(new \Twig_Extension_Debug());
+				} else {
+					$this->twig->disableDebug();
+				}
+				break;
+			case 'auto_reload':
+				if ($value) {
+					$this->twig->enableAutoReload();
+				} else {
+					$this->twig->disableAutoReload();
+				}
+				break;
+			case 'strict_variables':
+				if ($value) {
+					$this->twig->enableStrictVariables();
+				} else {
+					$this->twig->disableStrictVariables();
+				}
+				break;
+			case 'path':
+				$this->twig->setLoader(new \Twig_Loader_Filesystem($value));
+				break;
+			case 'charset':
+				$this->twig->setCharset($value);
+				break;
+			case 'base_template_class':
+				$this->twig->setBaseTemplateClass($value);
+				break;
+			case 'cache':
+				$this->twig->setCache($value);
+				break;
+			case 'autoescape':
+				$this->twig->addExtension(new \Twig_Extension_Escaper($value));
+				break;
+			case 'optimizations':
+				$this->twig->addExtension(new \Twig_Extension_Optimizer($value));
+				break;
+			}
+		}
 		$this->config[$name] = $value;
 		return $this;
 	}
@@ -149,59 +200,6 @@ class TwigAdapter implements AdapterInterface
 	 */
 	public function fetch($view, array $data = array())
 	{
-		foreach ($this->config as $name => $value) {
-			if (isset($value) && in_array($name, static::$twig_options)) {
-				switch ($name) {
-				case 'debug':
-					if ($value) {
-						$this->twig->enableDebug();
-						$this->twig->addExtension(new \Twig_Extension_Debug());
-					} else {
-						$this->twig->disableDebug();
-					}
-					break;
-				case 'auto_reload':
-					if ($value) {
-						$this->twig->enableAutoReload();
-					} else {
-						$this->twig->disableAutoReload();
-					}
-					break;
-				case 'strict_variables':
-					if ($value) {
-						$this->twig->enableStrictVariables();
-					} else {
-						$this->twig->disableStrictVariables();
-					}
-					break;
-				case 'path':
-					if ('\\' === DIRECTORY_SEPARATOR) {
-						$value = (is_array($value))
-							? array_map(function($val) {
-								return str_replace('\\', '/', $val);
-							}, $value)
-							: str_replace('\\', '/', $value);
-					}
-					$this->twig->setLoader(new \Twig_Loader_Filesystem($value));
-					break;
-				case 'charset':
-					$this->twig->setCharset($value);
-					break;
-				case 'base_template_class':
-					$this->twig->setBaseTemplateClass($value);
-					break;
-				case 'cache':
-					$this->twig->setCache($value);
-					break;
-				case 'autoescape':
-					$this->twig->addExtension(new \Twig_Extension_Escaper($value));
-					break;
-				case 'optimizations':
-					$this->twig->addExtension(new \Twig_Extension_Optimizer($value));
-					break;
-				}
-			}
-		}
 		if (strpos($view, '/') === 0) {
 			$view = substr($view, 1);
 		}

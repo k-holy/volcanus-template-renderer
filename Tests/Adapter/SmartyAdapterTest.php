@@ -70,7 +70,7 @@ class SmartyAdapterTest extends \PHPUnit_Framework_TestCase
 
 	public function testFetch()
 	{
-		$adapter = new SmartyAdapter(array(
+		$adapter = new SmartyAdapter(null, array(
 			'template_dir'    => $this->template_dir,
 			'compile_dir'     => $this->compile_dir,
 			'left_delimiter'  => '{{',

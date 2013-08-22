@@ -24,7 +24,7 @@ class PhpTalAdapterTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->templateRepository = realpath(__DIR__ . '/../views');
-		$this->phpCodeDestination  = realpath(__DIR__ . '/../temp');
+		$this->phpCodeDestination = realpath(__DIR__ . '/../temp');
 	}
 
 	public function tearDown()
@@ -68,7 +68,7 @@ class PhpTalAdapterTest extends \PHPUnit_Framework_TestCase
 
 	public function testFetch()
 	{
-		$adapter = new PhpTalAdapter(array(
+		$adapter = new PhpTalAdapter(null, array(
 			'templateRepository' => $this->templateRepository,
 			'phpCodeDestination' => $this->phpCodeDestination,
 			'cacheLifetime'      => 0,
