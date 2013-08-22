@@ -1,0 +1,45 @@
+{
+    "name": "volcanus/template-renderer",
+    "homepage": "https://github.com/k-holy/volcanus-template-renderer",
+    "version": "0.1.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "k-holy",
+            "email": "k.holy74@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Volcanus\\TemplateRenderer": "" }
+    },
+    "target-dir": "Volcanus/TemplateRenderer",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "smarty/smarty": "3.1.*",
+        "twig/twig": "1.*",
+        "phptal/phptal": "1.2.2"
+    },
+    "repositories": [
+        { 
+            "type": "package",
+            "package": {
+                "name": "phptal/phptal",
+                "version": "1.2.2",
+                "dist": {
+                    "url": "https://github.com/pornel/PHPTAL/zipball/1.2.2",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/pornel/PHPTAL.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "autoload": {
+                    "psr-0": {"PHPTAL": "classes/"}
+                }
+            }
+        }
+    ]
+}
