@@ -17,27 +17,9 @@ class PhpTalAdapter implements AdapterInterface
 {
 
 	/**
-	 * @var array 設定値
-	 */
-	private $config;
-
-	/**
 	 * @var \PHPTAL
 	 */
 	public $phptal;
-
-	/**
-	 * @var array PHPTAL用オプション設定
-	 */
-	private static $phptal_options = array(
-		'outputMode',
-		'encoding',
-		'templateRepository',
-		'phpCodeDestination',
-		'phpCodeExtension',
-		'cacheLifetime',
-		'forceReparse',
-	);
 
 	/**
 	 * コンストラクタ
@@ -60,7 +42,6 @@ class PhpTalAdapter implements AdapterInterface
 	public function initialize($phptal = null, array $configurations = array())
 	{
 		$this->setPhpTal(isset($phptal) ? $phptal : new \PHPTAL());
-		$this->config = array();
 		if (!empty($configurations)) {
 			foreach ($configurations as $name => $value) {
 				$this->setConfig($name, $value);

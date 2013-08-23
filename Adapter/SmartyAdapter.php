@@ -48,7 +48,6 @@ class SmartyAdapter implements AdapterInterface
 	{
 		$this->setSmarty(isset($smarty) ? $smarty : new \Smarty());
 		$this->config = array(
-			'charset' => null,
 			'defaultLayout' => null,
 		);
 		if (!empty($configurations)) {

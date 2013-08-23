@@ -48,7 +48,7 @@ class TwigAdapter implements AdapterInterface
 	{
 		$this->setTwig(isset($twig) ? $twig : new \Twig_Environment());
 		$this->config = array(
-			'path' => null,
+			'optimizations' => null,
 		);
 		if (!empty($configurations)) {
 			foreach ($configurations as $name => $value) {

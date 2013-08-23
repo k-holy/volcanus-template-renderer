@@ -147,4 +147,11 @@ TEMPLATE
 		$this->assertTrue($adapter->getConfig('escape_html'));
 	}
 
+	public function testConfigureCharset()
+	{
+		$adapter = new SmartyAdapter();
+		$adapter->setConfig('charset', 'EUC-JP');
+		$this->assertEquals('EUC-JP', $adapter->getConfig('charset'));
+	}
+
 }
