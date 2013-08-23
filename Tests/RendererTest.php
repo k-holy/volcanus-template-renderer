@@ -18,34 +18,6 @@ use Volcanus\TemplateRenderer\Renderer;
 class RendererTest extends \PHPUnit_Framework_TestCase
 {
 
-	private $template_dir;
-
-	public function setUp()
-	{
-		$this->view_dir    = __DIR__ . DIRECTORY_SEPARATOR . 'views';
-		$this->compile_dir = __DIR__ . DIRECTORY_SEPARATOR . 'temp';
-	}
-
-	public function tearDown()
-	{
-		$it = new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($this->view_dir)
-		);
-		foreach ($it as $file) {
-			if ($file->isFile() && $file->getBaseName() !== '.gitignore') {
-				unlink($file);
-			}
-		}
-		$it = new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($this->compile_dir)
-		);
-		foreach ($it as $file) {
-			if ($file->isFile() && $file->getBaseName() !== '.gitignore') {
-				unlink($file);
-			}
-		}
-	}
-
 	public function testConfig()
 	{
 		$adapter = $this->getMock('Volcanus\TemplateRenderer\Adapter\AdapterInterface');

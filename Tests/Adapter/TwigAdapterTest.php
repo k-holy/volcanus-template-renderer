@@ -37,38 +37,15 @@ class TwigAdapterTest extends \PHPUnit_Framework_TestCase
 		}
 	}
 
-	public function testSetConfig()
-	{
-		$adapter = new TwigAdapter();
-		$adapter->setConfig('path'               , $this->path);
-		$adapter->setConfig('debug'              , true);
-		$adapter->setConfig('charset'            , 'EUC-JP');
-		$adapter->setConfig('base_template_class', 'Twig_Template');
-		$adapter->setConfig('strict_variables'   , true);
-		$adapter->setConfig('autoescape'         , false);
-		$adapter->setConfig('cache'              , true);
-		$adapter->setConfig('auto_reload'        , true);
-		$adapter->setConfig('optimizations'      , 0);
-		$this->assertEquals($this->path   , $adapter->getConfig('path'));
-		$this->assertTrue($adapter->getConfig('debug'));
-		$this->assertEquals('EUC-JP'       , $adapter->getConfig('charset'));
-		$this->assertEquals('Twig_Template', $adapter->getConfig('base_template_class'));
-		$this->assertTrue($adapter->getConfig('strict_variables'));
-		$this->assertFalse($adapter->getConfig('autoescape'));
-		$this->assertTrue($adapter->getConfig('cache'));
-		$this->assertTrue($adapter->getConfig('auto_reload'));
-		$this->assertEquals(0, $adapter->getConfig('optimizations'));
-	}
-
 	public function testFetch()
 	{
 		$adapter = new TwigAdapter(null, array(
 			'path' => $this->path,
 		));
 
-		$template = '/render.html';
+		$template = 'render.html';
 
-		file_put_contents($this->path . $template,
+		file_put_contents($this->path . DIRECTORY_SEPARATOR . $template,
 <<<'TEMPLATE'
 <html>
 <head>
@@ -87,5 +64,75 @@ TEMPLATE
 		$this->assertEquals('TITLE', $title);
 	}
 
+	public function testConstructWithEngineAndGetChangedConfiguration()
+	{
+		$twig = new \Twig_Environment();
+		$adapter = new TwigAdapter($twig);
+		$twig->setCharset('EUC-JP');
+		$this->assertEquals('EUC-JP', $adapter->getConfig('charset'));
+	}
+
+	public function testConfigurePath()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('path', $this->path);
+		$this->assertContains($this->path, $adapter->getConfig('path'));
+	}
+
+	public function testConfigureDebug()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('debug', true);
+		$this->assertTrue($adapter->getConfig('debug'));
+	}
+
+	public function testConfigureCharset()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('charset', 'EUC-JP');
+		$this->assertEquals('EUC-JP', $adapter->getConfig('charset'));
+	}
+
+	public function testConfigureBaseTemplateClass()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('base_template_class', 'Twig_Template');
+		$this->assertEquals('Twig_Template', $adapter->getConfig('base_template_class'));
+	}
+
+	public function testConfigureStrictVariables()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('strict_variables', true);
+		$this->assertTrue($adapter->getConfig('strict_variables'));
+	}
+
+	public function testConfigureAutoescape()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('autoescape', 'html');
+		$this->assertEquals('html', $adapter->getConfig('autoescape'));
+	}
+
+	public function testConfigureCache()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('cache', true);
+		$this->assertTrue($adapter->getConfig('cache'));
+	}
+
+	public function testConfigureAutoReload()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('auto_reload', true);
+		$this->assertTrue($adapter->getConfig('auto_reload'));
+	}
+
+	public function testConfigureOptimizations()
+	{
+		$adapter = new TwigAdapter();
+		$adapter->setConfig('optimizations', 0);
+		$this->assertEquals(0, $adapter->getConfig('optimizations'));
+	}
 
 }

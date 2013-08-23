@@ -19,7 +19,7 @@ class PhpTalAdapter implements AdapterInterface
 	/**
 	 * @var array 設定値
 	 */
-	protected $config;
+	private $config;
 
 	/**
 	 * @var \PHPTAL
@@ -60,7 +60,7 @@ class PhpTalAdapter implements AdapterInterface
 	public function initialize($phptal = null, array $configurations = array())
 	{
 		$this->setPhpTal(isset($phptal) ? $phptal : new \PHPTAL());
-		$this->config = array_fill_keys(static::$phptal_options, null);
+		$this->config = array();
 		if (!empty($configurations)) {
 			foreach ($configurations as $name => $value) {
 				$this->setConfig($name, $value);
@@ -82,7 +82,28 @@ class PhpTalAdapter implements AdapterInterface
 	 */
 	public function getConfig($name)
 	{
-		return $this->config[$name];
+		if (property_exists($this->phptal, $name)) {
+			return $this->phptal->{$name};
+		}
+		switch ($name) {
+		case 'templateRepository':
+			return $this->phptal->getTemplateRepositories();
+		case 'phpCodeDestination':
+			return $this->phptal->getPhpCodeDestination();
+		case 'encoding':
+			return $this->phptal->getEncoding();
+		case 'phpCodeExtension':
+			return $this->phptal->getPhpCodeExtension();
+		case 'outputMode':
+			return $this->phptal->getOutputMode();
+		case 'cacheLifetime':
+			return $this->phptal->getCacheLifetime();
+		case 'forceReparse':
+			return $this->phptal->getForceReparse();
+		}
+		throw new \InvalidArgumentException(
+			sprintf('The config parameter "%s" is not support.', $name)
+		);
 	}
 
 	/**
@@ -96,46 +117,31 @@ class PhpTalAdapter implements AdapterInterface
 	{
 		switch ($name) {
 		case 'templateRepository':
+			$this->phptal->setTemplateRepository($value);
+			break;
 		case 'phpCodeDestination':
-			if (!is_string($value) && !is_array($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts string.', $name));
-			}
+			$this->phptal->setPhpCodeDestination($value);
 			break;
 		case 'encoding':
+			$this->phptal->setEncoding($value);
+			break;
 		case 'phpCodeExtension':
-			if (!is_string($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts string.', $name));
-			}
+			$this->phptal->setPhpCodeExtension($value);
 			break;
 		case 'outputMode':
+			$this->phptal->setOutputMode($value);
+			break;
 		case 'cacheLifetime':
-			if (!is_int($value) && !ctype_digit($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts bool.', $name));
-			}
-			$value = (int)$value;
+			$this->phptal->setCacheLifetime($value);
 			break;
 		case 'forceReparse':
-			if (!is_bool($value) && !is_int($value) && !ctype_digit($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts bool.', $name));
-			}
-			$value = (bool)$value;
+			$this->phptal->setForceReparse($value);
 			break;
 		default:
 			throw new \InvalidArgumentException(
-				sprintf('The config parameter "%s" is not defined.', $name)
+				sprintf('The config parameter "%s" is not support.', $name)
 			);
 		}
-		if (isset($value) && in_array($name, static::$phptal_options)) {
-			$method = 'set' . ucfirst($name);
-			if (method_exists($this->phptal, $method)) {
-				$this->phptal->{$method}($value);
-			}
-		}
-		$this->config[$name] = $value;
 		return $this;
 	}
 
@@ -148,9 +154,6 @@ class PhpTalAdapter implements AdapterInterface
 	 */
 	public function fetch($view, array $data = array())
 	{
-		if (strpos($view, '/') === 0) {
-			$view = substr($view, 1);
-		}
 		foreach ($data as $name => $value) {
 			$this->phptal->set($name, $value);
 		}

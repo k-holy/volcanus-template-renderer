@@ -47,25 +47,6 @@ class PhpTalAdapterTest extends \PHPUnit_Framework_TestCase
 		}
 	}
 
-	public function testSetConfig()
-	{
-		$adapter = new PhpTalAdapter();
-		$adapter->setConfig('outputMode', \PHPTAL::XHTML);
-		$adapter->setConfig('encoding', 'UTF-8');
-		$adapter->setConfig('templateRepository', $this->templateRepository);
-		$adapter->setConfig('phpCodeDestination', $this->phpCodeDestination);
-		$adapter->setConfig('phpCodeExtension', 'php');
-		$adapter->setConfig('cacheLifetime', 0);
-		$adapter->setConfig('forceReparse', true);
-		$this->assertEquals(\PHPTAL::XHTML, $adapter->getConfig('outputMode'));
-		$this->assertEquals('UTF-8', $adapter->getConfig('encoding'));
-		$this->assertEquals($this->templateRepository, $adapter->getConfig('templateRepository'));
-		$this->assertEquals($this->phpCodeDestination, $adapter->getConfig('phpCodeDestination'));
-		$this->assertEquals('php', $adapter->getConfig('phpCodeExtension'));
-		$this->assertEquals(0, $adapter->getConfig('cacheLifetime'));
-		$this->assertTrue($adapter->getConfig('forceReparse'));
-	}
-
 	public function testFetch()
 	{
 		$adapter = new PhpTalAdapter(null, array(
@@ -75,9 +56,9 @@ class PhpTalAdapterTest extends \PHPUnit_Framework_TestCase
 			'forceReparse'       => true,
 		));
 
-		$template = '/render.html';
+		$template = 'render.html';
 
-		file_put_contents($this->templateRepository . $template,
+		file_put_contents($this->templateRepository . DIRECTORY_SEPARATOR . $template,
 <<<'TEMPLATE'
 <html>
 <head>
@@ -94,6 +75,57 @@ TEMPLATE
 		$title = (string)$titles[0];
 
 		$this->assertEquals('TITLE', $title);
+	}
+
+	public function testConstructWithEngineAndGetChangedConfiguration()
+	{
+		$phptal = new \PHPTAL();
+		$adapter = new PhpTalAdapter($phptal);
+		$phptal->setEncoding('EUC-JP');
+		$this->assertEquals('EUC-JP', $adapter->getConfig('encoding'));
+	}
+
+	public function testConfigureOutputMode()
+	{
+		$adapter = new PhpTalAdapter();
+		$adapter->setConfig('outputMode', \PHPTAL::XHTML);
+		$this->assertEquals(\PHPTAL::XHTML, $adapter->getConfig('outputMode'));
+	}
+
+	public function testConfigureEncoding()
+	{
+		$adapter = new PhpTalAdapter();
+		$adapter->setConfig('encoding', 'UTF-8');
+		$this->assertEquals('UTF-8', $adapter->getConfig('encoding'));
+	}
+
+	public function testConfigureTemplateRepository()
+	{
+		$adapter = new PhpTalAdapter();
+		$adapter->setConfig('templateRepository', $this->templateRepository);
+		$this->assertContains($this->templateRepository, $adapter->getConfig('templateRepository'));
+	}
+
+	public function testConfigurePhpCodeDestination()
+	{
+		$adapter = new PhpTalAdapter();
+		$adapter->setConfig('phpCodeDestination', $this->phpCodeDestination);
+		// 末尾のディレクトリセパレータがエンジンにより自動で付与される
+		$this->assertEquals($this->phpCodeDestination . DIRECTORY_SEPARATOR, $adapter->getConfig('phpCodeDestination'));
+	}
+
+	public function testConfigureCacheLifetime()
+	{
+		$adapter = new PhpTalAdapter();
+		$adapter->setConfig('cacheLifetime', 1);
+		$this->assertEquals(1, $adapter->getConfig('cacheLifetime'));
+	}
+
+	public function testConfigureForceReparse()
+	{
+		$adapter = new PhpTalAdapter();
+		$adapter->setConfig('forceReparse', true);
+		$this->assertTrue($adapter->getConfig('forceReparse'));
 	}
 
 }

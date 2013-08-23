@@ -19,30 +19,12 @@ class SmartyAdapter implements AdapterInterface
 	/**
 	 * @var array 設定値
 	 */
-	protected $config;
+	private $config;
 
 	/**
 	 * @var \Smarty
 	 */
 	public $smarty;
-
-	/**
-	 * @var array Smarty用オプション設定
-	 */
-	private static $smarty_options = array(
-		'template_dir',
-		'config_dir',
-		'plugins_dir',
-		'compile_dir',
-		'cache_dir',
-		'left_delimiter',
-		'right_delimiter',
-		'default_modifiers',
-		'caching',
-		'force_compile',
-		'use_sub_dirs',
-		'escape_html',
-	);
 
 	/**
 	 * コンストラクタ
@@ -65,7 +47,8 @@ class SmartyAdapter implements AdapterInterface
 	public function initialize($smarty = null, array $configurations = array())
 	{
 		$this->setSmarty(isset($smarty) ? $smarty : new \Smarty());
-		$this->config = array_fill_keys(static::$smarty_options, null) + array(
+		$this->config = array(
+			'charset' => null,
 			'defaultLayout' => null,
 		);
 		if (!empty($configurations)) {
@@ -89,7 +72,28 @@ class SmartyAdapter implements AdapterInterface
 	 */
 	public function getConfig($name)
 	{
-		return $this->config[$name];
+		if (property_exists($this->smarty, $name)) {
+			return $this->smarty->{$name};
+		}
+		switch ($name) {
+		case 'template_dir':
+			return $this->smarty->getTemplateDir();
+		case 'config_dir':
+			return $this->smarty->getConfigDir();
+		case 'plugins_dir':
+			return $this->smarty->getPluginsDir();
+		case 'compile_dir':
+			return $this->smarty->getCompileDir();
+		case 'cache_dir':
+			return $this->smarty->getCacheDir();
+		case 'charset':
+			return \Smarty::$_CHARSET;
+		case 'defaultLayout':
+			return $this->config[$name];
+		}
+		throw new \InvalidArgumentException(
+			sprintf('The config parameter "%s" is not support.', $name)
+		);
 	}
 
 	/**
@@ -103,43 +107,42 @@ class SmartyAdapter implements AdapterInterface
 	{
 		switch ($name) {
 		case 'template_dir':
+			$this->smarty->setTemplateDir($value);
+			break;
 		case 'config_dir':
+			$this->smarty->setConfigDir($value);
+			break;
 		case 'plugins_dir':
+			$this->smarty->setPluginsDir($value);
+			break;
 		case 'compile_dir':
+			$this->smarty->setCompileDir($value);
+			break;
 		case 'cache_dir':
-			if (!is_string($value) && !is_array($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts string.', $name));
-			}
+			$this->smarty->setCacheDir($value);
 			break;
 		case 'left_delimiter':
 		case 'right_delimiter':
 		case 'default_modifiers':
-		case 'defaultLayout':
-			if (!is_string($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts string.', $name));
-			}
+			$this->smarty->{$name} = $value;
 			break;
 		case 'caching':
 		case 'force_compile':
 		case 'use_sub_dirs':
 		case 'escape_html':
-			if (!is_bool($value) && !is_int($value) && !ctype_digit($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts bool.', $name));
-			}
-			$value = (bool)$value;
+			$this->smarty->{$name} = (bool)$value;
+			break;
+		case 'charset':
+			\Smarty::$_CHARSET = $value;
+			break;
+		case 'defaultLayout':
+			$this->config[$name] = $value;
 			break;
 		default:
 			throw new \InvalidArgumentException(
-				sprintf('The config parameter "%s" is not defined.', $name)
+				sprintf('The config parameter "%s" is not support.', $name)
 			);
 		}
-		if (isset($value) && in_array($name, static::$smarty_options)) {
-			$this->smarty->{$name} = $value;
-		}
-		$this->config[$name] = $value;
 		return $this;
 	}
 
@@ -152,9 +155,6 @@ class SmartyAdapter implements AdapterInterface
 	 */
 	public function fetch($view, array $data = array())
 	{
-		if (strpos($view, '/') === 0) {
-			$view = substr($view, 1);
-		}
 		if (!preg_match('/\A[a-z_]+:/i', $view)) {
 			$defaultLayout = $this->getConfig('defaultLayout');
 			if (isset($defaultLayout)) {

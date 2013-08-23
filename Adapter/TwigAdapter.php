@@ -19,27 +19,12 @@ class TwigAdapter implements AdapterInterface
 	/**
 	 * @var array 設定値
 	 */
-	protected $config;
+	private $config;
 
 	/**
 	 * @var \Twig_Environment
 	 */
 	public $twig;
-
-	/**
-	 * @var array Twig用オプション設定
-	 */
-	private static $twig_options = array(
-		'debug',
-		'charset',
-		'base_template_class',
-		'strict_variables',
-		'autoescape',
-		'cache',
-		'auto_reload',
-		'optimizations',
-		'path',
-	);
 
 	/**
 	 * コンストラクタ
@@ -62,7 +47,9 @@ class TwigAdapter implements AdapterInterface
 	public function initialize($twig = null, array $configurations = array())
 	{
 		$this->setTwig(isset($twig) ? $twig : new \Twig_Environment());
-		$this->config = array_fill_keys(static::$twig_options, null);
+		$this->config = array(
+			'path' => null,
+		);
 		if (!empty($configurations)) {
 			foreach ($configurations as $name => $value) {
 				$this->setConfig($name, $value);
@@ -84,7 +71,34 @@ class TwigAdapter implements AdapterInterface
 	 */
 	public function getConfig($name)
 	{
-		return $this->config[$name];
+		switch ($name) {
+		case 'path':
+			$loader = $this->twig->getLoader();
+			return $loader->getPaths();
+		case 'base_template_class':
+			return $this->twig->getBaseTemplateClass();
+		case 'charset':
+			return $this->twig->getCharset();
+		case 'cache':
+			return $this->twig->getCache();
+		case 'autoescape':
+			if ($this->twig->hasExtension('escaper')) {
+				$escaper = $this->twig->getExtension('escaper');
+				return $escaper->getDefaultStrategy(null);
+			}
+			return false;
+		case 'optimizations':
+			return $this->config[$name];// Optimizerから値を取得する手段がないので…
+		case 'debug':
+			return $this->twig->isDebug();
+		case 'strict_variables':
+			return $this->twig->isStrictVariables();
+		case 'auto_reload':
+			return $this->twig->isAutoReload();
+		}
+		throw new \InvalidArgumentException(
+			sprintf('The config parameter "%s" is not defined.', $name)
+		);
 	}
 
 	/**
@@ -98,96 +112,56 @@ class TwigAdapter implements AdapterInterface
 	{
 		switch ($name) {
 		case 'path':
-			if (!is_string($value) && !is_array($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts string.', $name));
-			}
+			$this->twig->setLoader(new \Twig_Loader_Filesystem($value));
+			break;
+		case 'base_template_class':
+			$this->twig->setBaseTemplateClass($value);
 			break;
 		case 'charset':
-		case 'base_template_class':
-			if (!is_string($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts string.', $name));
-			}
+			$this->twig->setCharset($value);
 			break;
 		case 'cache':
-			if (!is_bool($value) && !is_string($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" accepts bool or string.', $name));
-			}
+			$this->twig->setCache($value);
 			break;
 		case 'autoescape':
-			if (!is_bool($value) && !is_string($value) && !is_callable($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" accepts bool or string or callable.', $name));
+			if ($this->twig->hasExtension('escaper')) {
+				$escaper = $this->twig->getExtension('escaper');
+				$escaper->setDefaultStrategy($value);
+			} else {
+				$this->twig->addExtension(new \Twig_Extension_Escaper($value));
 			}
 			break;
 		case 'optimizations':
-			if (!is_int($value) && !ctype_digit($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts bool.', $name));
-			}
-			$value = (int)$value;
+			$this->twig->addExtension(new \Twig_Extension_Optimizer($value));
+			$this->config[$name] = $value; // Optimizerから値を取得する手段がないので…
 			break;
 		case 'debug':
-		case 'strict_variables':
-		case 'auto_reload':
-			if (!is_bool($value) && !is_int($value) && !ctype_digit($value)) {
-				throw new \InvalidArgumentException(
-					sprintf('The config parameter "%s" only accepts bool.', $name));
+			if ($value) {
+				$this->twig->enableDebug();
+				$this->twig->addExtension(new \Twig_Extension_Debug());
+			} else {
+				$this->twig->disableDebug();
 			}
-			$value = (bool)$value;
+			break;
+		case 'strict_variables':
+			if ($value) {
+				$this->twig->enableStrictVariables();
+			} else {
+				$this->twig->disableStrictVariables();
+			}
+			break;
+		case 'auto_reload':
+			if ($value) {
+				$this->twig->enableAutoReload();
+			} else {
+				$this->twig->disableAutoReload();
+			}
 			break;
 		default:
 			throw new \InvalidArgumentException(
 				sprintf('The config parameter "%s" is not defined.', $name)
 			);
 		}
-		if (isset($value) && in_array($name, static::$twig_options)) {
-			switch ($name) {
-			case 'debug':
-				if ($value) {
-					$this->twig->enableDebug();
-					$this->twig->addExtension(new \Twig_Extension_Debug());
-				} else {
-					$this->twig->disableDebug();
-				}
-				break;
-			case 'auto_reload':
-				if ($value) {
-					$this->twig->enableAutoReload();
-				} else {
-					$this->twig->disableAutoReload();
-				}
-				break;
-			case 'strict_variables':
-				if ($value) {
-					$this->twig->enableStrictVariables();
-				} else {
-					$this->twig->disableStrictVariables();
-				}
-				break;
-			case 'path':
-				$this->twig->setLoader(new \Twig_Loader_Filesystem($value));
-				break;
-			case 'charset':
-				$this->twig->setCharset($value);
-				break;
-			case 'base_template_class':
-				$this->twig->setBaseTemplateClass($value);
-				break;
-			case 'cache':
-				$this->twig->setCache($value);
-				break;
-			case 'autoescape':
-				$this->twig->addExtension(new \Twig_Extension_Escaper($value));
-				break;
-			case 'optimizations':
-				$this->twig->addExtension(new \Twig_Extension_Optimizer($value));
-				break;
-			}
-		}
-		$this->config[$name] = $value;
 		return $this;
 	}
 
@@ -200,9 +174,6 @@ class TwigAdapter implements AdapterInterface
 	 */
 	public function fetch($view, array $data = array())
 	{
-		if (strpos($view, '/') === 0) {
-			$view = substr($view, 1);
-		}
 		return $this->twig->render($view, $data);
 	}
 
