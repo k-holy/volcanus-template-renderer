@@ -154,4 +154,53 @@ TEMPLATE
 		$this->assertEquals('EUC-JP', $adapter->getConfig('charset'));
 	}
 
+	public function testConfigureDefaultLayout()
+	{
+		$adapter = new SmartyAdapter();
+		$adapter->setConfig('defaultLayout', 'layout.html');
+		$this->assertEquals('layout.html', $adapter->getConfig('defaultLayout'));
+	}
+
+	public function testDefaultLayout()
+	{
+		$adapter = new SmartyAdapter(null, array(
+			'template_dir'    => $this->template_dir,
+			'compile_dir'     => $this->compile_dir,
+			'left_delimiter'  => '{{',
+			'right_delimiter' => '}}',
+			'caching'         => false,
+			'force_compile'   => true,
+			'use_sub_dirs'    => false,
+			'escape_html'     => true,
+			'defaultLayout'   => 'layout.html',
+		));
+
+		file_put_contents($this->template_dir . DIRECTORY_SEPARATOR . 'layout.html',
+<<<'TEMPLATE'
+<html>
+<head>
+<title>{{$title}}</title>
+</head>
+<body>
+{{block name="content"}}{{/block}}
+</body>
+</html>
+TEMPLATE
+		);
+
+		file_put_contents($this->template_dir . DIRECTORY_SEPARATOR . 'content.html',
+<<<'TEMPLATE'
+{{block name="content"}}
+<h1>{{$title}}</h1>
+{{/block}}
+TEMPLATE
+		);
+
+		$xml = simplexml_load_string($adapter->fetch('content.html', array('title' => 'TITLE')));
+		$titles = $xml->xpath('/html/head/title');
+		$headings = $xml->xpath('/html/body/h1');
+		$this->assertEquals('TITLE', (string)$titles[0]);
+		$this->assertEquals('TITLE', (string)$headings[0]);
+	}
+
 }
