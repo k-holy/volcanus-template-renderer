@@ -34,7 +34,7 @@ class Renderer
 	 * @param Volcanus\TemplateRenderer\Adapter\AdapterInterface
 	 * @param array 設定オプション
 	 */
-	public function __construct(AdapterInterface $adapter = null, array $configurations = array())
+	public function __construct(AdapterInterface $adapter, array $configurations = array())
 	{
 		$this->adapter = $adapter;
 		if (!empty($configurations)) {
