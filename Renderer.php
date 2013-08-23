@@ -36,13 +36,39 @@ class Renderer
 	 */
 	public function __construct(AdapterInterface $adapter, array $configurations = array())
 	{
+		$this->initialize($adapter, $configurations);
+	}
+
+	/**
+	 * オブジェクトを初期化します。
+	 *
+	 * @param Volcanus\TemplateRenderer\Adapter\AdapterInterface
+	 * @param array 設定オプション
+	 * @return self
+	 */
+	public function initialize(AdapterInterface $adapter, array $configurations = array())
+	{
+		$this->data = array();
+		$this->setAdapter($adapter, $configurations);
+		return $this;
+	}
+
+	/**
+	 * アダプタをセットします。
+	 *
+	 * @param Volcanus\TemplateRenderer\Adapter\AdapterInterface
+	 * @param array 設定オプション
+	 * @return self
+	 */
+	public function setAdapter(AdapterInterface $adapter, array $configurations = array())
+	{
 		$this->adapter = $adapter;
 		if (!empty($configurations)) {
 			foreach ($configurations as $name => $value) {
 				$this->adapter->setConfig($name, $value);
 			}
 		}
-		$this->data = array();
+		return $this;
 	}
 
 	/**
