@@ -1,7 +1,9 @@
 {
     "name": "volcanus/template-renderer",
     "homepage": "https://github.com/k-holy/volcanus-template-renderer",
-    "version": "0.2.0",
+    "type": "library",
+    "description": "renderer class for some template systems",
+    "version": "0.2.1",
     "license": "MIT",
     "authors": [
         {
@@ -10,13 +12,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Volcanus\\TemplateRenderer": "" }
+        "psr-0": { "Volcanus\\TemplateRenderer": "." }
     },
     "target-dir": "Volcanus/TemplateRenderer",
     "require": {
         "php": ">=5.3.3"
     },
     "require-dev": {
+        "satooshi/php-coveralls": "dev-master",
         "smarty/smarty": "3.1.*",
         "twig/twig": "1.*",
         "phptal/phptal": "dev-master"
