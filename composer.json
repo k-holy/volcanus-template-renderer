@@ -12,9 +12,8 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Volcanus\\TemplateRenderer": "." }
+        "psr-0": { "Volcanus\\TemplateRenderer": "src/" }
     },
-    "target-dir": "Volcanus/TemplateRenderer",
     "require": {
         "php": ">=5.3.3"
     },
