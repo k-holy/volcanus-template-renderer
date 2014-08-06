@@ -3,7 +3,7 @@
     "homepage": "https://github.com/k-holy/volcanus-template-renderer",
     "type": "library",
     "description": "renderer class for some template systems",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "license": "MIT",
     "authors": [
         {
