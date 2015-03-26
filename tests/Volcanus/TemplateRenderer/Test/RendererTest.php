@@ -33,6 +33,15 @@ class RendererTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('get foo value', $renderer->config('foo'));
 	}
 
+	public function testSetAdapterWithConfig()
+	{
+		$adapter = $this->getMock('Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+		$adapter->expects($this->once())
+			->method('setConfig');
+
+		$renderer = new Renderer($adapter, array('foo' => 'value'));
+	}
+
 	public function testFetch()
 	{
 		$adapter = $this->getMock('Volcanus\TemplateRenderer\Adapter\AdapterInterface');
@@ -57,6 +66,15 @@ class RendererTest extends \PHPUnit_Framework_TestCase
 		$renderer->assign('name', 'foo');
 		$this->assertEquals('foo', $renderer->fetch('/path/to/template'));
 		$this->assertEquals('bar', $renderer->fetch('/path/to/template', array('name' => 'bar')));
+	}
+
+	public function testAssigned()
+	{
+		$adapter = $this->getMock('Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+		$renderer = new Renderer($adapter);
+		$renderer->assign('name', 'foo');
+		$this->assertTrue($renderer->assigned('name'));
+		$this->assertFalse($renderer->assigned('age'));
 	}
 
 	public function testRender()

@@ -103,6 +103,17 @@ class Renderer
 	}
 
 	/**
+	 * 指定された名前で値がアサインされているかどうかを返します。
+	 *
+	 * @param string 名前
+	 * @return bool
+	 */
+	public function assigned($name)
+	{
+		return array_key_exists($name, $this->data);
+	}
+
+	/**
 	 * テンプレート処理結果を返します。
 	 *
 	 * @param string テンプレートファイルのパス
