@@ -12,13 +12,12 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Volcanus\\TemplateRenderer": "src/" }
+        "psr-4": { "Volcanus\\TemplateRenderer\\": "src/" }
     },
     "require": {
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "satooshi/php-coveralls": "dev-master",
         "smarty/smarty": "3.1.*",
         "twig/twig": "1.*",
         "phptal/phptal": "dev-master"
