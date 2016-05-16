@@ -15,7 +15,7 @@
         "psr-4": { "Volcanus\\TemplateRenderer\\": "src/" }
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.5.9"
     },
     "require-dev": {
         "smarty/smarty": "3.1.*",
