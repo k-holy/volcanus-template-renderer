@@ -19,7 +19,6 @@
     },
     "require-dev": {
         "smarty/smarty": "3.1.*",
-        "twig/twig": "1.*",
         "phptal/phptal": "dev-master"
     }
 }
