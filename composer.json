@@ -15,10 +15,11 @@
         "psr-4": { "Volcanus\\TemplateRenderer\\": "src/" }
     },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=5.3.9"
     },
     "require-dev": {
+        "phpunit/phpunit": "^4.8",
         "smarty/smarty": "3.1.*",
-        "phptal/phptal": "dev-master"
+        "phptal/phptal": "1.3.*"
     }
 }
