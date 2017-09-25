@@ -1,25 +1,27 @@
 {
-    "name": "volcanus/template-renderer",
-    "homepage": "https://github.com/k-holy/volcanus-template-renderer",
-    "type": "library",
-    "description": "renderer class for some template systems",
-    "version": "0.2.4",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "k-holy",
-            "email": "k.holy74@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": { "Volcanus\\TemplateRenderer\\": "src/" }
-    },
-    "require": {
-        "php": ">=5.3.9"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^4.8",
-        "smarty/smarty": ">=3.1.11,<=3.1.21",
-        "phptal/phptal": "1.3.*"
+  "name": "volcanus/template-renderer",
+  "homepage": "https://github.com/k-holy/volcanus-template-renderer",
+  "type": "library",
+  "description": "renderer class for some template systems",
+  "version": "0.2.4",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "k-holy",
+      "email": "k.holy74@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Volcanus\\TemplateRenderer\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.3.9"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8",
+    "smarty/smarty": ">=3.1.11,<=3.1.21",
+    "phptal/phptal": "1.3.*"
+  }
 }
