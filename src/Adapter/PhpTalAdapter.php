@@ -24,8 +24,8 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * コンストラクタ
      *
-     * @param \PHPTAL
-     * @param array 設定オプション
+     * @param \PHPTAL $phptal
+     * @param array $configurations 設定オプション
      */
     public function __construct(\PHPTAL $phptal = null, array $configurations = array())
     {
@@ -35,9 +35,9 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param \PHPTAL
-     * @param array 設定オプション
-     * @return self
+     * @param \PHPTAL $phptal
+     * @param array $configurations 設定オプション
+     * @return $this
      */
     public function initialize($phptal = null, array $configurations = array())
     {
@@ -58,7 +58,7 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * 指定された設定値を返します。
      *
-     * @param string 設定名
+     * @param string $name 設定名
      * @return mixed 設定値
      */
     public function getConfig($name)
@@ -90,9 +90,9 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * 指定された設定値をセットします。
      *
-     * @param string 設定名
-     * @param mixed 設定値
-     * @return self
+     * @param string $name 設定名
+     * @param mixed$value  設定値
+     * @return $this
      */
     public function setConfig($name, $value)
     {
@@ -129,8 +129,8 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * テンプレート処理結果を返します。
      *
-     * @param string テンプレートファイルのパス
-     * @param array テンプレート変数の配列
+     * @param string $view テンプレートファイルのパス
+     * @param array $data テンプレート変数の配列
      * @return string
      */
     public function fetch($view, array $data = array())

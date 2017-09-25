@@ -29,8 +29,8 @@ class SmartyAdapter implements AdapterInterface
     /**
      * コンストラクタ
      *
-     * @param \Smarty
-     * @param array 設定オプション
+     * @param \Smarty $smarty
+     * @param array $configurations 設定オプション
      */
     public function __construct(\Smarty $smarty = null, array $configurations = array())
     {
@@ -40,9 +40,9 @@ class SmartyAdapter implements AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param \Smarty
-     * @param array 設定オプション
-     * @return self
+     * @param \Smarty $smarty
+     * @param array $configurations 設定オプション
+     * @return $this
      */
     public function initialize($smarty = null, array $configurations = array())
     {
@@ -66,7 +66,7 @@ class SmartyAdapter implements AdapterInterface
     /**
      * 指定された設定値を返します。
      *
-     * @param string 設定名
+     * @param string $name 設定名
      * @return mixed 設定値
      */
     public function getConfig($name)
@@ -98,9 +98,9 @@ class SmartyAdapter implements AdapterInterface
     /**
      * 指定された設定値をセットします。
      *
-     * @param string 設定名
-     * @param mixed 設定値
-     * @return self
+     * @param string $name 設定名
+     * @param mixed $value 設定値
+     * @return $this
      */
     public function setConfig($name, $value)
     {
@@ -148,8 +148,8 @@ class SmartyAdapter implements AdapterInterface
     /**
      * テンプレート処理結果を返します。
      *
-     * @param string テンプレートファイルのパス
-     * @param array テンプレート変数の配列
+     * @param string $view テンプレートファイルのパス
+     * @param array $data テンプレート変数の配列
      * @return string
      */
     public function fetch($view, array $data = array())

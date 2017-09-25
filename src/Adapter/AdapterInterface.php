@@ -19,16 +19,16 @@ interface AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param mixed テンプレートエンジンのインスタンス
-     * @param array 設定オプション
+     * @param mixed $engine テンプレートエンジンのインスタンス
+     * @param array $configurations 設定オプション
      */
     public function initialize($engine = null, array $configurations = array());
 
     /**
      * 指定された設定値をセットします。
      *
-     * @param string 設定名
-     * @param mixed 設定値
+     * @param string $name 設定名
+     * @param mixed $value 設定値
      * @return $this
      */
     public function setConfig($name, $value);
@@ -36,7 +36,7 @@ interface AdapterInterface
     /**
      * 指定された設定値を返します。
      *
-     * @param string 設定名
+     * @param string $name 設定名
      * @return mixed 設定値
      */
     public function getConfig($name);
@@ -44,8 +44,8 @@ interface AdapterInterface
     /**
      * テンプレート処理結果を返します。
      *
-     * @param string テンプレートファイルのパス
-     * @param array テンプレート変数の配列
+     * @param string $view テンプレートファイルのパス
+     * @param array $data テンプレート変数の配列
      * @return string
      */
     public function fetch($view, array $data = array());

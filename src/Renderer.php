@@ -19,7 +19,7 @@ class Renderer
 {
 
     /**
-     * @var Volcanus\TemplateRenderer\Adapter\AdapterInterface アダプタ
+     * @var \Volcanus\TemplateRenderer\Adapter\AdapterInterface アダプタ
      */
     private $adapter;
 
@@ -31,8 +31,8 @@ class Renderer
     /**
      * コンストラクタ
      *
-     * @param Volcanus\TemplateRenderer\Adapter\AdapterInterface
-     * @param array 設定オプション
+     * @param \Volcanus\TemplateRenderer\Adapter\AdapterInterface $adapter $adapter
+     * @param array $configurations 設定オプション
      */
     public function __construct(AdapterInterface $adapter, array $configurations = array())
     {
@@ -42,9 +42,9 @@ class Renderer
     /**
      * オブジェクトを初期化します。
      *
-     * @param Volcanus\TemplateRenderer\Adapter\AdapterInterface
-     * @param array 設定オプション
-     * @return self
+     * @param \Volcanus\TemplateRenderer\Adapter\AdapterInterface $adapter
+     * @param array $configurations 設定オプション
+     * @return $this
      */
     public function initialize(AdapterInterface $adapter, array $configurations = array())
     {
@@ -56,9 +56,9 @@ class Renderer
     /**
      * アダプタをセットします。
      *
-     * @param Volcanus\TemplateRenderer\Adapter\AdapterInterface
-     * @param array 設定オプション
-     * @return self
+     * @param \Volcanus\TemplateRenderer\Adapter\AdapterInterface $adapter
+     * @param array $configurations 設定オプション
+     * @return $this
      */
     public function setAdapter(AdapterInterface $adapter, array $configurations = array())
     {
@@ -75,8 +75,8 @@ class Renderer
      * 引数1の場合は指定された設定の値を返します。
      * 引数2の場合は指定された設置の値をセットして$thisを返します。
      *
-     * @param string 設定名
-     * @return mixed 設定値 または self
+     * @param string $name 設定名
+     * @return mixed 設定値 または $this
      */
     public function config($name)
     {
@@ -94,8 +94,8 @@ class Renderer
     /**
      * 出力データに値を追加します。
      *
-     * @param string 名前
-     * @param mixed 値
+     * @param string $name 名前
+     * @param mixed $value 値
      */
     public function assign($name, $value)
     {
@@ -105,7 +105,7 @@ class Renderer
     /**
      * 指定された名前で値がアサインされているかどうかを返します。
      *
-     * @param string 名前
+     * @param string $name 名前
      * @return bool
      */
     public function assigned($name)
@@ -116,8 +116,8 @@ class Renderer
     /**
      * テンプレート処理結果を返します。
      *
-     * @param string テンプレートファイルのパス
-     * @param array テンプレート変数の配列
+     * @param string $view テンプレートファイルのパス
+     * @param array $data テンプレート変数の配列
      * @return string
      */
     public function fetch($view, array $data = array())
@@ -131,8 +131,8 @@ class Renderer
     /**
      * テンプレート処理結果を出力します。
      *
-     * @param string テンプレートファイルのパス
-     * @param array テンプレート変数の配列
+     * @param string $view テンプレートファイルのパス
+     * @param array $data テンプレート変数の配列
      */
     public function render($view, array $data = array())
     {
