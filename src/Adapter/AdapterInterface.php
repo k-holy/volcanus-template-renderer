@@ -16,38 +16,38 @@ namespace Volcanus\TemplateRenderer\Adapter;
 interface AdapterInterface
 {
 
-	/**
-	 * オブジェクトを初期化します。
-	 *
-	 * @param mixed テンプレートエンジンのインスタンス
-	 * @param array 設定オプション
-	 */
-	public function initialize($engine = null, array $configurations = array());
+    /**
+     * オブジェクトを初期化します。
+     *
+     * @param mixed テンプレートエンジンのインスタンス
+     * @param array 設定オプション
+     */
+    public function initialize($engine = null, array $configurations = array());
 
-	/**
-	 * 指定された設定値をセットします。
-	 *
-	 * @param string 設定名
-	 * @param mixed 設定値
-	 * @return $this
-	 */
-	public function setConfig($name, $value);
+    /**
+     * 指定された設定値をセットします。
+     *
+     * @param string 設定名
+     * @param mixed 設定値
+     * @return $this
+     */
+    public function setConfig($name, $value);
 
-	/**
-	 * 指定された設定値を返します。
-	 *
-	 * @param string 設定名
-	 * @return mixed 設定値
-	 */
-	public function getConfig($name);
+    /**
+     * 指定された設定値を返します。
+     *
+     * @param string 設定名
+     * @return mixed 設定値
+     */
+    public function getConfig($name);
 
-	/**
-	 * テンプレート処理結果を返します。
-	 *
-	 * @param string テンプレートファイルのパス
-	 * @param array テンプレート変数の配列
-	 * @return string
-	 */
-	public function fetch($view, array $data = array());
+    /**
+     * テンプレート処理結果を返します。
+     *
+     * @param string テンプレートファイルのパス
+     * @param array テンプレート変数の配列
+     * @return string
+     */
+    public function fetch($view, array $data = array());
 
 }
