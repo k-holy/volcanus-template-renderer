@@ -15,7 +15,7 @@ use Volcanus\TemplateRenderer\Adapter\PhpTalAdapter;
  *
  * @author k.holy74@gmail.com
  */
-class PhpTalAdapterTest extends \PHPUnit_Framework_TestCase
+class PhpTalAdapterTest extends \PHPUnit\Framework\TestCase
 {
 
     private $templateRepository;

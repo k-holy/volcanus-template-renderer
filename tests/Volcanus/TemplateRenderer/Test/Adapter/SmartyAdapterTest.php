@@ -15,7 +15,7 @@ use Volcanus\TemplateRenderer\Adapter\SmartyAdapter;
  *
  * @author k.holy74@gmail.com
  */
-class SmartyAdapterTest extends \PHPUnit_Framework_TestCase
+class SmartyAdapterTest extends \PHPUnit\Framework\TestCase
 {
 
     private $template_dir;
