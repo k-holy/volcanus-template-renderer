@@ -15,13 +15,13 @@ use Volcanus\TemplateRenderer\Renderer;
  *
  * @author k.holy74@gmail.com
  */
-class RendererTest extends \PHPUnit_Framework_TestCase
+class RendererTest extends \PHPUnit\Framework\TestCase
 {
 
     public function testConfig()
     {
         /** @var $adapter \Volcanus\TemplateRenderer\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+        $adapter = $this->createMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
         $adapter->expects($this->any())
             ->method('setConfig')
             ->will($this->returnValue('set foo value'));
@@ -37,7 +37,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     public function testSetAdapterWithConfig()
     {
         /** @var $adapter \Volcanus\TemplateRenderer\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+        $adapter = $this->createMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
         $adapter->expects($this->once())
             ->method('setConfig');
 
@@ -48,7 +48,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     public function testFetch()
     {
         /** @var $adapter \Volcanus\TemplateRenderer\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+        $adapter = $this->createMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
         /** @noinspection PhpUnusedParameterInspection */
         $adapter->expects($this->any())
             ->method('fetch')
@@ -62,7 +62,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     public function testAssignAndFetch()
     {
         /** @var $adapter \Volcanus\TemplateRenderer\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+        $adapter = $this->createMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
         /** @noinspection PhpUnusedParameterInspection */
         $adapter->expects($this->any())
             ->method('fetch')
@@ -78,7 +78,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     public function testAssigned()
     {
         /** @var $adapter \Volcanus\TemplateRenderer\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+        $adapter = $this->createMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
         $renderer = new Renderer($adapter);
         $renderer->assign('name', 'foo');
         $this->assertTrue($renderer->assigned('name'));
@@ -88,7 +88,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     public function testRender()
     {
         /** @var $adapter \Volcanus\TemplateRenderer\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $adapter = $this->getMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+        $adapter = $this->createMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
         /** @noinspection PhpUnusedParameterInspection */
         $adapter->expects($this->any())
             ->method('fetch')
