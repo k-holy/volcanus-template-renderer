@@ -22,7 +22,7 @@ interface AdapterInterface
      * @param mixed $engine テンプレートエンジンのインスタンス
      * @param array $configurations 設定オプション
      */
-    public function initialize($engine = null, array $configurations = array());
+    public function initialize($engine = null, array $configurations = []);
 
     /**
      * 指定された設定値をセットします。
@@ -48,6 +48,6 @@ interface AdapterInterface
      * @param array $data テンプレート変数の配列
      * @return string
      */
-    public function fetch($view, array $data = array());
+    public function fetch($view, array $data = []);
 
 }
