@@ -111,4 +111,26 @@ class RendererTest extends \PHPUnit\Framework\TestCase
         ob_end_clean();
     }
 
+    public function testWriteResponse()
+    {
+        /** @var $adapter \Volcanus\TemplateRenderer\Adapter\AdapterInterface|\PHPUnit_Framework_MockObject_MockObject */
+        $adapter = $this->createMock('\Volcanus\TemplateRenderer\Adapter\AdapterInterface');
+        /** @noinspection PhpUnusedParameterInspection */
+        $adapter->expects($this->any())
+            ->method('fetch')
+            ->will($this->returnCallback(function (
+                /** @noinspection PhpUnusedParameterInspection */
+                $view, $data
+            ) {
+                return $data['name'];
+            }));
+        $renderer = new Renderer($adapter);
+        $renderer->assign('name', 'foo');
+        $response = new \Zend\Diactoros\Response\HtmlResponse('');
+        $renderedResponse = $renderer->writeResponse($response, '/path/to/template');
+        $this->assertInstanceOf('\Zend\Diactoros\Response\HtmlResponse', $renderedResponse);
+        $this->assertSame($response, $renderedResponse);
+        $this->assertEquals('foo', $renderedResponse->getBody()->__toString());
+    }
+
 }

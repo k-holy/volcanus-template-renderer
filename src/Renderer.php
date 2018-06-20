@@ -139,4 +139,19 @@ class Renderer
         echo $this->fetch($view, $data);
     }
 
+    /**
+     * テンプレート処理結果をレスポンスボディに書き込んで返します。
+     *
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param string $view テンプレートファイルのパス
+     * @param array $data テンプレート変数の配列
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function writeResponse(\Psr\Http\Message\ResponseInterface $response, $view, array $data = [])
+    {
+        $output = $this->fetch($view, $data);
+        $response->getBody()->write($output);
+        return $response;
+    }
+
 }
