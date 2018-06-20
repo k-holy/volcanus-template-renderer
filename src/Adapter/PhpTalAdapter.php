@@ -26,8 +26,9 @@ class PhpTalAdapter implements AdapterInterface
      *
      * @param \PHPTAL $phptal
      * @param array $configurations 設定オプション
+     * @throws \PHPTAL_ConfigurationException
      */
-    public function __construct(\PHPTAL $phptal = null, array $configurations = array())
+    public function __construct(\PHPTAL $phptal = null, array $configurations = [])
     {
         $this->initialize($phptal, $configurations);
     }
@@ -38,8 +39,9 @@ class PhpTalAdapter implements AdapterInterface
      * @param \PHPTAL $phptal
      * @param array $configurations 設定オプション
      * @return $this
+     * @throws \PHPTAL_ConfigurationException
      */
-    public function initialize($phptal = null, array $configurations = array())
+    public function initialize($phptal = null, array $configurations = [])
     {
         $this->setPhpTal(isset($phptal) ? $phptal : new \PHPTAL());
         if (!empty($configurations)) {
@@ -91,8 +93,9 @@ class PhpTalAdapter implements AdapterInterface
      * 指定された設定値をセットします。
      *
      * @param string $name 設定名
-     * @param mixed$value  設定値
+     * @param mixed $value 設定値
      * @return $this
+     * @throws \PHPTAL_ConfigurationException
      */
     public function setConfig($name, $value)
     {
@@ -133,7 +136,7 @@ class PhpTalAdapter implements AdapterInterface
      * @param array $data テンプレート変数の配列
      * @return string
      */
-    public function fetch($view, array $data = array())
+    public function fetch($view, array $data = [])
     {
         foreach ($data as $name => $value) {
             $this->phptal->set($name, $value);

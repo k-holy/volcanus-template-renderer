@@ -32,7 +32,7 @@ class SmartyAdapter implements AdapterInterface
      * @param \Smarty $smarty
      * @param array $configurations 設定オプション
      */
-    public function __construct(\Smarty $smarty = null, array $configurations = array())
+    public function __construct(\Smarty $smarty = null, array $configurations = [])
     {
         $this->initialize($smarty, $configurations);
     }
@@ -44,12 +44,12 @@ class SmartyAdapter implements AdapterInterface
      * @param array $configurations 設定オプション
      * @return $this
      */
-    public function initialize($smarty = null, array $configurations = array())
+    public function initialize($smarty = null, array $configurations = [])
     {
         $this->setSmarty(isset($smarty) ? $smarty : new \Smarty());
-        $this->config = array(
+        $this->config = [
             'defaultLayout' => null,
-        );
+        ];
         if (!empty($configurations)) {
             foreach ($configurations as $name => $value) {
                 $this->setConfig($name, $value);
@@ -152,7 +152,7 @@ class SmartyAdapter implements AdapterInterface
      * @param array $data テンプレート変数の配列
      * @return string
      */
-    public function fetch($view, array $data = array())
+    public function fetch($view, array $data = [])
     {
         if (!preg_match('/\A[a-z_]+:/i', $view)) {
             $defaultLayout = $this->getConfig('defaultLayout');

@@ -49,7 +49,7 @@ class SmartyAdapterTest extends \PHPUnit\Framework\TestCase
 
     public function testFetch()
     {
-        $adapter = new SmartyAdapter(null, array(
+        $adapter = new SmartyAdapter(null, [
             'template_dir' => $this->template_dir,
             'compile_dir' => $this->compile_dir,
             'left_delimiter' => '{{',
@@ -58,7 +58,7 @@ class SmartyAdapterTest extends \PHPUnit\Framework\TestCase
             'force_compile' => true,
             'use_sub_dirs' => false,
             'escape_html' => true,
-        ));
+        ]);
 
         $template = 'render.html';
 
@@ -74,7 +74,7 @@ class SmartyAdapterTest extends \PHPUnit\Framework\TestCase
 TEMPLATE
         );
 
-        $xml = simplexml_load_string($adapter->fetch($template, array('title' => 'TITLE')));
+        $xml = simplexml_load_string($adapter->fetch($template, ['title' => 'TITLE']));
         $titles = $xml->xpath('/html/head/title');
         $title = (string)$titles[0];
 
@@ -163,7 +163,7 @@ TEMPLATE
 
     public function testDefaultLayout()
     {
-        $adapter = new SmartyAdapter(null, array(
+        $adapter = new SmartyAdapter(null, [
             'template_dir' => $this->template_dir,
             'compile_dir' => $this->compile_dir,
             'left_delimiter' => '{{',
@@ -173,7 +173,7 @@ TEMPLATE
             'use_sub_dirs' => false,
             'escape_html' => true,
             'defaultLayout' => 'layout.html',
-        ));
+        ]);
 
         file_put_contents($this->template_dir . DIRECTORY_SEPARATOR . 'layout.html',
             <<<'TEMPLATE'
@@ -196,7 +196,7 @@ TEMPLATE
 TEMPLATE
         );
 
-        $xml = simplexml_load_string($adapter->fetch('content.html', array('title' => 'TITLE')));
+        $xml = simplexml_load_string($adapter->fetch('content.html', ['title' => 'TITLE']));
         $titles = $xml->xpath('/html/head/title');
         $headings = $xml->xpath('/html/body/h1');
         $this->assertEquals('TITLE', (string)$titles[0]);

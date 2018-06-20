@@ -42,7 +42,7 @@ class RendererTest extends \PHPUnit\Framework\TestCase
             ->method('setConfig');
 
         /** @noinspection PhpUnusedLocalVariableInspection */
-        $renderer = new Renderer($adapter, array('foo' => 'value'));
+        $renderer = new Renderer($adapter, ['foo' => 'value']);
     }
 
     public function testFetch()
@@ -52,11 +52,14 @@ class RendererTest extends \PHPUnit\Framework\TestCase
         /** @noinspection PhpUnusedParameterInspection */
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function ($view, $data) {
+            ->will($this->returnCallback(function (
+                /** @noinspection PhpUnusedParameterInspection */
+                $view, $data
+            ) {
                 return $data['name'];
             }));
         $renderer = new Renderer($adapter);
-        $this->assertEquals('foo', $renderer->fetch('/path/to/template', array('name' => 'foo')));
+        $this->assertEquals('foo', $renderer->fetch('/path/to/template', ['name' => 'foo']));
     }
 
     public function testAssignAndFetch()
@@ -66,13 +69,16 @@ class RendererTest extends \PHPUnit\Framework\TestCase
         /** @noinspection PhpUnusedParameterInspection */
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function ($view, $data) {
+            ->will($this->returnCallback(function (
+                /** @noinspection PhpUnusedParameterInspection */
+                $view, $data
+            ) {
                 return $data['name'];
             }));
         $renderer = new Renderer($adapter);
         $renderer->assign('name', 'foo');
         $this->assertEquals('foo', $renderer->fetch('/path/to/template'));
-        $this->assertEquals('bar', $renderer->fetch('/path/to/template', array('name' => 'bar')));
+        $this->assertEquals('bar', $renderer->fetch('/path/to/template', ['name' => 'bar']));
     }
 
     public function testAssigned()
@@ -92,12 +98,15 @@ class RendererTest extends \PHPUnit\Framework\TestCase
         /** @noinspection PhpUnusedParameterInspection */
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function ($view, $data) {
+            ->will($this->returnCallback(function (
+                /** @noinspection PhpUnusedParameterInspection */
+                $view, $data
+            ) {
                 return $data['name'];
             }));
         $renderer = new Renderer($adapter);
         ob_start();
-        $renderer->render('/path/to/template', array('name' => 'foo'));
+        $renderer->render('/path/to/template', ['name' => 'foo']);
         $this->assertEquals('foo', ob_get_contents());
         ob_end_clean();
     }

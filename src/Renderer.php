@@ -34,7 +34,7 @@ class Renderer
      * @param \Volcanus\TemplateRenderer\Adapter\AdapterInterface $adapter $adapter
      * @param array $configurations 設定オプション
      */
-    public function __construct(AdapterInterface $adapter, array $configurations = array())
+    public function __construct(AdapterInterface $adapter, array $configurations = [])
     {
         $this->initialize($adapter, $configurations);
     }
@@ -46,9 +46,9 @@ class Renderer
      * @param array $configurations 設定オプション
      * @return $this
      */
-    public function initialize(AdapterInterface $adapter, array $configurations = array())
+    public function initialize(AdapterInterface $adapter, array $configurations = [])
     {
-        $this->data = array();
+        $this->data = [];
         $this->setAdapter($adapter, $configurations);
         return $this;
     }
@@ -60,7 +60,7 @@ class Renderer
      * @param array $configurations 設定オプション
      * @return $this
      */
-    public function setAdapter(AdapterInterface $adapter, array $configurations = array())
+    public function setAdapter(AdapterInterface $adapter, array $configurations = [])
     {
         $this->adapter = $adapter;
         if (!empty($configurations)) {
@@ -120,7 +120,7 @@ class Renderer
      * @param array $data テンプレート変数の配列
      * @return string
      */
-    public function fetch($view, array $data = array())
+    public function fetch($view, array $data = [])
     {
         return $this->adapter->fetch(
             $view,
@@ -134,7 +134,7 @@ class Renderer
      * @param string $view テンプレートファイルのパス
      * @param array $data テンプレート変数の配列
      */
-    public function render($view, array $data = array())
+    public function render($view, array $data = [])
     {
         echo $this->fetch($view, $data);
     }
