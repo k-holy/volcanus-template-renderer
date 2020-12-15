@@ -6,8 +6,9 @@
  * @license The MIT License (MIT)
  */
 
-namespace Volcanus\TemplateRenderer\Tests\Adapter;
+namespace Volcanus\TemplateRenderer\Test\Adapter;
 
+use PHPUnit\Framework\TestCase;
 use Volcanus\TemplateRenderer\Adapter\SmartyAdapter;
 
 /**
@@ -15,7 +16,7 @@ use Volcanus\TemplateRenderer\Adapter\SmartyAdapter;
  *
  * @author k.holy74@gmail.com
  */
-class SmartyAdapterTest extends \PHPUnit\Framework\TestCase
+class SmartyAdapterTest extends TestCase
 {
 
     private $template_dir;
@@ -64,7 +65,7 @@ class SmartyAdapterTest extends \PHPUnit\Framework\TestCase
 
         file_put_contents($this->template_dir . DIRECTORY_SEPARATOR . $template,
             <<<'TEMPLATE'
-<html>
+<html lang="en">
 <head>
 <title>{{$title}}</title>
 </head>
@@ -177,7 +178,7 @@ TEMPLATE
 
         file_put_contents($this->template_dir . DIRECTORY_SEPARATOR . 'layout.html',
             <<<'TEMPLATE'
-<html>
+<html lang="en">
 <head>
 <title>{{$title}}</title>
 </head>

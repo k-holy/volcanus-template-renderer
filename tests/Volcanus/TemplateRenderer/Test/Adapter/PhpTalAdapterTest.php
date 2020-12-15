@@ -6,8 +6,9 @@
  * @license The MIT License (MIT)
  */
 
-namespace Volcanus\TemplateRenderer\Tests\Adapter;
+namespace Volcanus\TemplateRenderer\Test\Adapter;
 
+use PHPUnit\Framework\TestCase;
 use Volcanus\TemplateRenderer\Adapter\PhpTalAdapter;
 
 /**
@@ -15,7 +16,7 @@ use Volcanus\TemplateRenderer\Adapter\PhpTalAdapter;
  *
  * @author k.holy74@gmail.com
  */
-class PhpTalAdapterTest extends \PHPUnit\Framework\TestCase
+class PhpTalAdapterTest extends TestCase
 {
 
     private $templateRepository;
@@ -61,7 +62,7 @@ class PhpTalAdapterTest extends \PHPUnit\Framework\TestCase
 
         file_put_contents($this->templateRepository . DIRECTORY_SEPARATOR . $template,
             <<<'TEMPLATE'
-<html>
+<html lang="en">
 <head>
 <title tal:content="title">Title is here.</title>
 </head>
@@ -89,7 +90,6 @@ TEMPLATE
 
     public function testConfigureOutputMode()
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         $adapter = new PhpTalAdapter();
         /** @noinspection PhpUnhandledExceptionInspection */
         $adapter->setConfig('outputMode', \PHPTAL::XHTML);
@@ -98,7 +98,6 @@ TEMPLATE
 
     public function testConfigureEncoding()
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         $adapter = new PhpTalAdapter();
         /** @noinspection PhpUnhandledExceptionInspection */
         $adapter->setConfig('encoding', 'UTF-8');
@@ -107,7 +106,6 @@ TEMPLATE
 
     public function testConfigureTemplateRepository()
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         $adapter = new PhpTalAdapter();
         /** @noinspection PhpUnhandledExceptionInspection */
         $adapter->setConfig('templateRepository', $this->templateRepository);
@@ -116,7 +114,6 @@ TEMPLATE
 
     public function testConfigurePhpCodeDestination()
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         $adapter = new PhpTalAdapter();
         /** @noinspection PhpUnhandledExceptionInspection */
         $adapter->setConfig('phpCodeDestination', $this->phpCodeDestination);
@@ -126,7 +123,6 @@ TEMPLATE
 
     public function testConfigureCacheLifetime()
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         $adapter = new PhpTalAdapter();
         /** @noinspection PhpUnhandledExceptionInspection */
         $adapter->setConfig('cacheLifetime', 1);
@@ -135,7 +131,6 @@ TEMPLATE
 
     public function testConfigureForceReparse()
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         $adapter = new PhpTalAdapter();
         /** @noinspection PhpUnhandledExceptionInspection */
         $adapter->setConfig('forceReparse', true);
