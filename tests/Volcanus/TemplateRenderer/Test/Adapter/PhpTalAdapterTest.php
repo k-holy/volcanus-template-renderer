@@ -22,13 +22,13 @@ class PhpTalAdapterTest extends TestCase
     private $templateRepository;
     private $phpCodeDestination;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->templateRepository = realpath(__DIR__ . '/../views');
         $this->phpCodeDestination = realpath(__DIR__ . '/../temp');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $it = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($this->templateRepository)

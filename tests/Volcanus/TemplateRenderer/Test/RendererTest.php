@@ -28,7 +28,7 @@ class RendererTest extends TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $adapter->expects($this->any())
             ->method('setConfig')
-            ->will($this->returnValue('set foo value'));
+            ->will($this->returnValue($adapter));
         $adapter->expects($this->any())
             ->method('getConfig')
             ->will($this->returnValue('get foo value'));

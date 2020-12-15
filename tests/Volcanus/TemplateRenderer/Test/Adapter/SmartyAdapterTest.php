@@ -22,13 +22,13 @@ class SmartyAdapterTest extends TestCase
     private $template_dir;
     private $compile_dir;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->template_dir = realpath(__DIR__ . '/../views');
         $this->compile_dir = realpath(__DIR__ . '/../temp');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $it = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($this->template_dir)
