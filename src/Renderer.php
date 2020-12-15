@@ -2,12 +2,13 @@
 /**
  * Volcanus libraries for PHP
  *
- * @copyright 2011-2013 k-holy <k.holy74@gmail.com>
+ * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
  */
 
 namespace Volcanus\TemplateRenderer;
 
+use Psr\Http\Message\ResponseInterface;
 use Volcanus\TemplateRenderer\Adapter\AdapterInterface;
 
 /**
@@ -19,7 +20,7 @@ class Renderer
 {
 
     /**
-     * @var \Volcanus\TemplateRenderer\Adapter\AdapterInterface アダプタ
+     * @var AdapterInterface アダプタ
      */
     private $adapter;
 
@@ -31,7 +32,7 @@ class Renderer
     /**
      * コンストラクタ
      *
-     * @param \Volcanus\TemplateRenderer\Adapter\AdapterInterface $adapter $adapter
+     * @param AdapterInterface $adapter $adapter
      * @param array $configurations 設定オプション
      */
     public function __construct(AdapterInterface $adapter, array $configurations = [])
@@ -42,11 +43,11 @@ class Renderer
     /**
      * オブジェクトを初期化します。
      *
-     * @param \Volcanus\TemplateRenderer\Adapter\AdapterInterface $adapter
+     * @param AdapterInterface $adapter
      * @param array $configurations 設定オプション
      * @return $this
      */
-    public function initialize(AdapterInterface $adapter, array $configurations = [])
+    public function initialize(AdapterInterface $adapter, array $configurations = []): Renderer
     {
         $this->data = [];
         $this->setAdapter($adapter, $configurations);
@@ -56,11 +57,11 @@ class Renderer
     /**
      * アダプタをセットします。
      *
-     * @param \Volcanus\TemplateRenderer\Adapter\AdapterInterface $adapter
+     * @param AdapterInterface $adapter
      * @param array $configurations 設定オプション
      * @return $this
      */
-    public function setAdapter(AdapterInterface $adapter, array $configurations = [])
+    public function setAdapter(AdapterInterface $adapter, array $configurations = []): Renderer
     {
         $this->adapter = $adapter;
         if (!empty($configurations)) {
@@ -78,7 +79,7 @@ class Renderer
      * @param string $name 設定名
      * @return mixed 設定値 または $this
      */
-    public function config($name)
+    public function config(string $name)
     {
         switch (func_num_args()) {
             case 1:
@@ -97,7 +98,7 @@ class Renderer
      * @param string $name 名前
      * @param mixed $value 値
      */
-    public function assign($name, $value)
+    public function assign(string $name, $value)
     {
         $this->data[$name] = $value;
     }
@@ -108,7 +109,7 @@ class Renderer
      * @param string $name 名前
      * @return bool
      */
-    public function assigned($name)
+    public function assigned(string $name): bool
     {
         return array_key_exists($name, $this->data);
     }
@@ -120,7 +121,7 @@ class Renderer
      * @param array $data テンプレート変数の配列
      * @return string
      */
-    public function fetch($view, array $data = [])
+    public function fetch(string $view, array $data = []): string
     {
         return $this->adapter->fetch(
             $view,
@@ -134,7 +135,7 @@ class Renderer
      * @param string $view テンプレートファイルのパス
      * @param array $data テンプレート変数の配列
      */
-    public function render($view, array $data = [])
+    public function render(string $view, array $data = [])
     {
         echo $this->fetch($view, $data);
     }
@@ -142,12 +143,12 @@ class Renderer
     /**
      * テンプレート処理結果をレスポンスボディに書き込んで返します。
      *
-     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param ResponseInterface $response
      * @param string $view テンプレートファイルのパス
      * @param array $data テンプレート変数の配列
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
-    public function writeResponse(\Psr\Http\Message\ResponseInterface $response, $view, array $data = [])
+    public function writeResponse(ResponseInterface $response, string $view, array $data = []): ResponseInterface
     {
         $output = $this->fetch($view, $data);
         $response->getBody()->write($output);

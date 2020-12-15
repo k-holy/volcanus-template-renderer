@@ -2,7 +2,7 @@
 /**
  * Volcanus libraries for PHP
  *
- * @copyright 2011-2013 k-holy <k.holy74@gmail.com>
+ * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
  */
 
@@ -29,7 +29,7 @@ class SmartyAdapter implements AdapterInterface
     /**
      * コンストラクタ
      *
-     * @param \Smarty $smarty
+     * @param \Smarty|null $smarty
      * @param array $configurations 設定オプション
      */
     public function __construct(\Smarty $smarty = null, array $configurations = [])
@@ -40,11 +40,11 @@ class SmartyAdapter implements AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param \Smarty $smarty
+     * @param \Smarty|null $smarty
      * @param array $configurations 設定オプション
      * @return $this
      */
-    public function initialize($smarty = null, array $configurations = [])
+    public function initialize($smarty = null, array $configurations = []): AdapterInterface
     {
         $this->setSmarty(isset($smarty) ? $smarty : new \Smarty());
         $this->config = [
@@ -69,7 +69,7 @@ class SmartyAdapter implements AdapterInterface
      * @param string $name 設定名
      * @return mixed 設定値
      */
-    public function getConfig($name)
+    public function getConfig(string $name)
     {
         if (property_exists($this->smarty, $name)) {
             return $this->smarty->{$name};
@@ -102,7 +102,7 @@ class SmartyAdapter implements AdapterInterface
      * @param mixed $value 設定値
      * @return $this
      */
-    public function setConfig($name, $value)
+    public function setConfig(string $name, $value): AdapterInterface
     {
         switch ($name) {
             case 'template_dir':
@@ -151,8 +151,9 @@ class SmartyAdapter implements AdapterInterface
      * @param string $view テンプレートファイルのパス
      * @param array $data テンプレート変数の配列
      * @return string
+     * @throws \SmartyException
      */
-    public function fetch($view, array $data = [])
+    public function fetch(string $view, array $data = []): string
     {
         if (!preg_match('/\A[a-z_]+:/i', $view)) {
             $defaultLayout = $this->getConfig('defaultLayout');

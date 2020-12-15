@@ -2,7 +2,7 @@
 /**
  * Volcanus libraries for PHP
  *
- * @copyright 2011-2013 k-holy <k.holy74@gmail.com>
+ * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
  */
 
@@ -21,8 +21,9 @@ interface AdapterInterface
      *
      * @param mixed $engine テンプレートエンジンのインスタンス
      * @param array $configurations 設定オプション
+     * @return $this
      */
-    public function initialize($engine = null, array $configurations = []);
+    public function initialize($engine = null, array $configurations = []): AdapterInterface;
 
     /**
      * 指定された設定値をセットします。
@@ -31,7 +32,7 @@ interface AdapterInterface
      * @param mixed $value 設定値
      * @return $this
      */
-    public function setConfig($name, $value);
+    public function setConfig(string $name, $value): AdapterInterface;
 
     /**
      * 指定された設定値を返します。
@@ -39,7 +40,7 @@ interface AdapterInterface
      * @param string $name 設定名
      * @return mixed 設定値
      */
-    public function getConfig($name);
+    public function getConfig(string $name);
 
     /**
      * テンプレート処理結果を返します。
@@ -48,6 +49,6 @@ interface AdapterInterface
      * @param array $data テンプレート変数の配列
      * @return string
      */
-    public function fetch($view, array $data = []);
+    public function fetch(string $view, array $data = []): string;
 
 }

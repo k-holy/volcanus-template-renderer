@@ -2,7 +2,7 @@
 /**
  * Volcanus libraries for PHP
  *
- * @copyright 2011-2013 k-holy <k.holy74@gmail.com>
+ * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
  */
 
@@ -24,7 +24,7 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * コンストラクタ
      *
-     * @param \PHPTAL $phptal
+     * @param \PHPTAL|null $phptal
      * @param array $configurations 設定オプション
      * @throws \PHPTAL_ConfigurationException
      */
@@ -36,12 +36,12 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param \PHPTAL $phptal
+     * @param \PHPTAL|null $phptal
      * @param array $configurations 設定オプション
      * @return $this
      * @throws \PHPTAL_ConfigurationException
      */
-    public function initialize($phptal = null, array $configurations = [])
+    public function initialize($phptal = null, array $configurations = []): AdapterInterface
     {
         $this->setPhpTal(isset($phptal) ? $phptal : new \PHPTAL());
         if (!empty($configurations)) {
@@ -63,7 +63,7 @@ class PhpTalAdapter implements AdapterInterface
      * @param string $name 設定名
      * @return mixed 設定値
      */
-    public function getConfig($name)
+    public function getConfig(string $name)
     {
         if (property_exists($this->phptal, $name)) {
             return $this->phptal->{$name};
@@ -97,7 +97,7 @@ class PhpTalAdapter implements AdapterInterface
      * @return $this
      * @throws \PHPTAL_ConfigurationException
      */
-    public function setConfig($name, $value)
+    public function setConfig(string $name, $value): AdapterInterface
     {
         switch ($name) {
             case 'templateRepository':
@@ -136,7 +136,7 @@ class PhpTalAdapter implements AdapterInterface
      * @param array $data テンプレート変数の配列
      * @return string
      */
-    public function fetch($view, array $data = [])
+    public function fetch(string $view, array $data = []): string
     {
         foreach ($data as $name => $value) {
             $this->phptal->set($name, $value);
