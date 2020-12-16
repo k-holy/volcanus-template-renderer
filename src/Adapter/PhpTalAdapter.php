@@ -9,7 +9,7 @@
 namespace Volcanus\TemplateRenderer\Adapter;
 
 /**
- * Adapter for PHPTAL
+ * Adapter for PHPTAL (https://phptal.org)
  *
  * @author k.holy74@gmail.com
  */
