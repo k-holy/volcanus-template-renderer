@@ -9,7 +9,7 @@
 namespace Volcanus\TemplateRenderer\Adapter;
 
 /**
- * Adapter for Smarty3
+ * Adapter for Smarty (https://www.smarty.net)
  *
  * @author k.holy74@gmail.com
  */
