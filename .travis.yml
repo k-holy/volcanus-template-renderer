@@ -1,23 +1,48 @@
 language: php
-dist: trusty
+dist: bionic
 
 php:
   - 7.3
   - 7.4
 
-env:
-  matrix:
-    - DEPENDENCIES="--dev --no-interaction --prefer-source"
-    - DEPENDENCIES="--dev --no-interaction --prefer-source --prefer-lowest --prefer-stable"
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
 
 before_install:
+  - phpenv config-rm xdebug.ini || true
+  - composer validate
   - composer self-update
-  - composer require php-coveralls/php-coveralls
-  - composer update $DEPENDENCIES
+
+install:
+  - composer update
 
 script:
-  - mkdir -p build/logs
-  - vendor/bin/phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
+  - vendor/bin/phpunit -c phpunit.xml
 
-after_script:
-  - php vendor/bin/coveralls -v -c .coveralls.yml
+jobs:
+  fast_finish: true
+  include:
+    - stage: Test
+      name: Lowest dependencies
+      php: 7.4
+      install: composer update --prefer-dist --prefer-lowest
+
+    - stage: Test
+      name: PHP 8
+      php: nightly
+      install: composer update --ignore-platform-reqs
+
+    - stage: Code Quality
+      name: Code coverage
+      php: 7.4
+      install: composer global require --dev php-coveralls/php-coveralls
+      script:
+        - vendor/bin/phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
+      after_success:
+        - php vendor/bin/coveralls -v -c .coveralls.yml
+
+  allow_failures:
+    - php: nightly
+
