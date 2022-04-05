@@ -45,7 +45,7 @@ class Renderer
      *
      * @param AdapterInterface $adapter
      * @param array $configurations 設定オプション
-     * @return $this
+     * @return self
      */
     public function initialize(AdapterInterface $adapter, array $configurations = []): Renderer
     {
@@ -59,7 +59,7 @@ class Renderer
      *
      * @param AdapterInterface $adapter
      * @param array $configurations 設定オプション
-     * @return $this
+     * @return self
      */
     public function setAdapter(AdapterInterface $adapter, array $configurations = []): Renderer
     {

@@ -195,6 +195,9 @@ TEMPLATE
         $this->assertEquals('layout.html', $adapter->getConfig('defaultLayout'));
     }
 
+    /**
+     * @throws \SmartyException
+     */
     public function testDefaultLayout()
     {
         $adapter = new SmartyAdapter(null, [

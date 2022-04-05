@@ -21,7 +21,7 @@ interface AdapterInterface
      *
      * @param mixed $engine テンプレートエンジンのインスタンス
      * @param array $configurations 設定オプション
-     * @return $this
+     * @return self
      */
     public function initialize($engine = null, array $configurations = []): AdapterInterface;
 
@@ -30,7 +30,7 @@ interface AdapterInterface
      *
      * @param string $name 設定名
      * @param mixed $value 設定値
-     * @return $this
+     * @return self
      */
     public function setConfig(string $name, $value): AdapterInterface;
 
