@@ -42,11 +42,11 @@ class SmartyAdapter implements AdapterInterface
      *
      * @param \Smarty|null $smarty
      * @param array $configurations 設定オプション
-     * @return $this
+     * @return self
      */
     public function initialize($smarty = null, array $configurations = []): AdapterInterface
     {
-        $this->setSmarty(isset($smarty) ? $smarty : new \Smarty());
+        $this->setSmarty($smarty ?? new \Smarty());
         $this->config = [
             'defaultLayout' => null,
         ];
@@ -100,7 +100,7 @@ class SmartyAdapter implements AdapterInterface
      *
      * @param string $name 設定名
      * @param mixed $value 設定値
-     * @return $this
+     * @return self
      */
     public function setConfig(string $name, $value): AdapterInterface
     {
