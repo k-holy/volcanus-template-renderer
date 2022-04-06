@@ -1,8 +1,7 @@
 # Volcanus_TemplateRenderer
 
 [![Latest Stable Version](https://poser.pugx.org/volcanus/template-renderer/v/stable.png)](https://packagist.org/packages/volcanus/template-renderer)
-[![Build Status](https://travis-ci.org/k-holy/volcanus-template-renderer.png?branch=master)](https://travis-ci.org/k-holy/volcanus-template-renderer)
-[![Coverage Status](https://coveralls.io/repos/k-holy/volcanus-template-renderer/badge.png?branch=master)](https://coveralls.io/r/k-holy/volcanus-template-renderer?branch=master)
+[![Continuous Integration](https://github.com/k-holy/volcanus-template-renderer/actions/workflows/ci.yml/badge.svg)](https://github.com/k-holy/volcanus-template-renderer/actions/workflows/ci.yml)
 
 各種テンプレートエンジンを共通のインタフェースで利用するためのPHPクラスライブラリです。
 
