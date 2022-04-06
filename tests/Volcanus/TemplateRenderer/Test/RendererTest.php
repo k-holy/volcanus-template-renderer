@@ -56,7 +56,6 @@ class RendererTest extends TestCase
         $adapter->expects($this->any())
             ->method('fetch')
             ->will($this->returnCallback(function (
-                /** @noinspection PhpUnusedParameterInspection */
                 $view, $data
             ) {
                 return $data['name'];
@@ -72,7 +71,6 @@ class RendererTest extends TestCase
         $adapter->expects($this->any())
             ->method('fetch')
             ->will($this->returnCallback(function (
-                /** @noinspection PhpUnusedParameterInspection */
                 $view, $data
             ) {
                 return $data['name'];
@@ -99,10 +97,7 @@ class RendererTest extends TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function (
-                /** @noinspection PhpUnusedParameterInspection */
-                $view, $data
-            ) {
+            ->will($this->returnCallback(function ($view, $data) {
                 return $data['name'];
             }));
         $renderer = new Renderer($adapter);
@@ -118,10 +113,7 @@ class RendererTest extends TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function (
-                /** @noinspection PhpUnusedParameterInspection */
-                $view, $data
-            ) {
+            ->will($this->returnCallback(function ($view, $data) {
                 return $data['name'];
             }));
         $renderer = new Renderer($adapter);

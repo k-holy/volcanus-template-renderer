@@ -30,19 +30,19 @@ class LatteAdapter implements AdapterInterface
     ];
 
     /**
-     * @var \Latte\Engine
+     * @var Engine
      */
     public $latte;
 
     /**
-     * @var \Latte\Loaders\FileLoader
+     * @var FileLoader
      */
     private $fileLoader;
 
     /**
      * コンストラクタ
      *
-     * @param \Latte\Engine|null $latte
+     * @param Engine|null $latte
      * @param array $configurations 設定オプション
      */
     public function __construct(Engine $latte = null, array $configurations = [])
@@ -53,13 +53,13 @@ class LatteAdapter implements AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param \Latte\Engine|null $latte
+     * @param Engine|null $latte
      * @param array $configurations 設定オプション
-     * @return $this
+     * @return self
      */
     public function initialize($latte = null, array $configurations = []): AdapterInterface
     {
-        $this->setLatte(isset($latte) ? $latte : new \Latte\Engine());
+        $this->setLatte($latte ?? new Engine());
         foreach (array_keys($this->config) as $name) {
             $this->config[$name] = null;
         }
@@ -71,7 +71,7 @@ class LatteAdapter implements AdapterInterface
         return $this;
     }
 
-    private function setLatte(\Latte\Engine $latte)
+    private function setLatte(Engine $latte)
     {
         $this->latte = $latte;
     }
@@ -102,7 +102,7 @@ class LatteAdapter implements AdapterInterface
      *
      * @param string $name 設定名
      * @param mixed $value 設定値
-     * @return $this
+     * @return self
      */
     public function setConfig(string $name, $value): AdapterInterface
     {

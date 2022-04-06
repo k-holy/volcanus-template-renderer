@@ -38,12 +38,12 @@ class PhpTalAdapter implements AdapterInterface
      *
      * @param \PHPTAL|null $phptal
      * @param array $configurations 設定オプション
-     * @return $this
+     * @return self
      * @throws \PHPTAL_ConfigurationException
      */
     public function initialize($phptal = null, array $configurations = []): AdapterInterface
     {
-        $this->setPhpTal(isset($phptal) ? $phptal : new \PHPTAL());
+        $this->setPhpTal($phptal ?? new \PHPTAL());
         if (!empty($configurations)) {
             foreach ($configurations as $name => $value) {
                 $this->setConfig($name, $value);
@@ -94,7 +94,7 @@ class PhpTalAdapter implements AdapterInterface
      *
      * @param string $name 設定名
      * @param mixed $value 設定値
-     * @return $this
+     * @return self
      * @throws \PHPTAL_ConfigurationException
      */
     public function setConfig(string $name, $value): AdapterInterface
