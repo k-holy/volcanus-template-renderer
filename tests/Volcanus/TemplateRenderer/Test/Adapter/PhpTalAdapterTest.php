@@ -19,13 +19,13 @@ use Volcanus\TemplateRenderer\Adapter\PhpTalAdapter;
 class PhpTalAdapterTest extends TestCase
 {
 
-    private $templateRepository;
-    private $phpCodeDestination;
+    private string $templateRepository;
+    private string $phpCodeDestination;
 
     public function setUp(): void
     {
-        $this->templateRepository = realpath(__DIR__ . '/../views');
-        $this->phpCodeDestination = realpath(__DIR__ . '/../temp');
+        $this->templateRepository = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'views');
+        $this->phpCodeDestination = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'temp');
     }
 
     public function tearDown(): void

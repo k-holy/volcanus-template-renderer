@@ -1,6 +1,6 @@
 <?php
 /**
- * Volcanus libraries for PHP
+ * Volcanus libraries for PHP 8.1~
  *
  * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
@@ -19,7 +19,7 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * @var \PHPTAL
      */
-    public $phptal;
+    public \PHPTAL $phptal;
 
     /**
      * コンストラクタ
@@ -36,14 +36,14 @@ class PhpTalAdapter implements AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param \PHPTAL|null $phptal
+     * @param mixed|null $engine
      * @param array $configurations 設定オプション
      * @return self
      * @throws \PHPTAL_ConfigurationException
      */
-    public function initialize($phptal = null, array $configurations = []): AdapterInterface
+    public function initialize(mixed $engine = null, array $configurations = []): AdapterInterface
     {
-        $this->setPhpTal($phptal ?? new \PHPTAL());
+        $this->setPhpTal($engine ?? new \PHPTAL());
         if (!empty($configurations)) {
             foreach ($configurations as $name => $value) {
                 $this->setConfig($name, $value);
@@ -63,7 +63,7 @@ class PhpTalAdapter implements AdapterInterface
      * @param string $name 設定名
      * @return mixed 設定値
      */
-    public function getConfig(string $name)
+    public function getConfig(string $name): mixed
     {
         if (property_exists($this->phptal, $name)) {
             return $this->phptal->{$name};
@@ -97,7 +97,7 @@ class PhpTalAdapter implements AdapterInterface
      * @return self
      * @throws \PHPTAL_ConfigurationException
      */
-    public function setConfig(string $name, $value): AdapterInterface
+    public function setConfig(string $name, mixed $value): AdapterInterface
     {
         switch ($name) {
             case 'templateRepository':

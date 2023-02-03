@@ -1,6 +1,6 @@
 <?php
 /**
- * Volcanus libraries for PHP
+ * Volcanus libraries for PHP 8.1~
  *
  * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
@@ -19,13 +19,13 @@ use Volcanus\TemplateRenderer\Adapter\LatteAdapter;
 class LatteAdapterTest extends TestCase
 {
 
-    private $baseDir;
-    private $tempDirectory;
+    private string $baseDir;
+    private string $tempDirectory;
 
     public function setUp(): void
     {
-        $this->baseDir = realpath(__DIR__ . '/../views');
-        $this->tempDirectory = realpath(__DIR__ . '/../temp');
+        $this->baseDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'views');
+        $this->tempDirectory = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'temp');
     }
 
     public function tearDown(): void

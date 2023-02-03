@@ -1,6 +1,6 @@
 <?php
 /**
- * Volcanus libraries for PHP
+ * Volcanus libraries for PHP 8.1~
  *
  * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
@@ -22,12 +22,12 @@ class Renderer
     /**
      * @var AdapterInterface アダプタ
      */
-    private $adapter;
+    private AdapterInterface $adapter;
 
     /**
      * @var array 出力データ
      */
-    private $data;
+    private array $data;
 
     /**
      * コンストラクタ
@@ -61,7 +61,7 @@ class Renderer
      * @param array $configurations 設定オプション
      * @return self
      */
-    public function setAdapter(AdapterInterface $adapter, array $configurations = []): Renderer
+    public function setAdapter(AdapterInterface $adapter, array $configurations = []): self
     {
         $this->adapter = $adapter;
         if (!empty($configurations)) {
@@ -79,7 +79,7 @@ class Renderer
      * @param string $name 設定名
      * @return mixed 設定値 または $this
      */
-    public function config(string $name)
+    public function config(string $name): mixed
     {
         switch (func_num_args()) {
             case 1:
@@ -97,8 +97,9 @@ class Renderer
      *
      * @param string $name 名前
      * @param mixed $value 値
+     * @return void
      */
-    public function assign(string $name, $value)
+    public function assign(string $name, mixed $value): void
     {
         $this->data[$name] = $value;
     }
@@ -134,8 +135,9 @@ class Renderer
      *
      * @param string $view テンプレートファイルのパス
      * @param array $data テンプレート変数の配列
+     * @return void
      */
-    public function render(string $view, array $data = [])
+    public function render(string $view, array $data = []): void
     {
         echo $this->fetch($view, $data);
     }
