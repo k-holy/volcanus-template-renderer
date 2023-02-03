@@ -1,6 +1,6 @@
 <?php
 /**
- * Volcanus libraries for PHP
+ * Volcanus libraries for PHP 8.1~
  *
  * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
@@ -19,12 +19,12 @@ class SmartyAdapter implements AdapterInterface
     /**
      * @var array 設定値
      */
-    private $config;
+    private array $config;
 
     /**
      * @var \Smarty
      */
-    public $smarty;
+    public \Smarty $smarty;
 
     /**
      * コンストラクタ
@@ -40,13 +40,13 @@ class SmartyAdapter implements AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param \Smarty|null $smarty
+     * @param mixed|null $engine
      * @param array $configurations 設定オプション
      * @return self
      */
-    public function initialize($smarty = null, array $configurations = []): AdapterInterface
+    public function initialize(mixed $engine = null, array $configurations = []): AdapterInterface
     {
-        $this->setSmarty($smarty ?? new \Smarty());
+        $this->setSmarty($engine ?? new \Smarty());
         $this->config = [
             'defaultLayout' => null,
         ];
@@ -69,7 +69,7 @@ class SmartyAdapter implements AdapterInterface
      * @param string $name 設定名
      * @return mixed 設定値
      */
-    public function getConfig(string $name)
+    public function getConfig(string $name): mixed
     {
         if (property_exists($this->smarty, $name)) {
             return $this->smarty->{$name};
@@ -102,7 +102,7 @@ class SmartyAdapter implements AdapterInterface
      * @param mixed $value 設定値
      * @return self
      */
-    public function setConfig(string $name, $value): AdapterInterface
+    public function setConfig(string $name, mixed $value): AdapterInterface
     {
         switch ($name) {
             case 'template_dir':

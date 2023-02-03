@@ -17,15 +17,15 @@
     }
   },
   "require": {
-    "php": ">=7.3||>=8.0.2",
+    "php": "^8.1",
     "psr/http-message": "~1.0"
   },
   "require-dev": {
     "ext-simplexml": "*",
     "phpunit/phpunit": "^9.5",
-    "smarty/smarty": "^4.1",
-    "phptal/phptal": "^1.5||^1.6",
-    "latte/latte": "^2.11",
+    "smarty/smarty": "^4.3",
+    "phptal/phptal": "^1.7",
+    "latte/latte": "^3.0",
     "laminas/laminas-diactoros": "^2.9"
   }
 }

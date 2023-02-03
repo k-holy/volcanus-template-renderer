@@ -1,6 +1,6 @@
 <?php
 /**
- * Volcanus libraries for PHP
+ * Volcanus libraries for PHP 8.1~
  *
  * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
@@ -19,13 +19,13 @@ use Volcanus\TemplateRenderer\Adapter\SmartyAdapter;
 class SmartyAdapterTest extends TestCase
 {
 
-    private $template_dir;
-    private $compile_dir;
+    private string $template_dir;
+    private string $compile_dir;
 
     public function setUp(): void
     {
-        $this->template_dir = realpath(__DIR__ . '/../views');
-        $this->compile_dir = realpath(__DIR__ . '/../temp');
+        $this->template_dir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'views');
+        $this->compile_dir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'temp');
     }
 
     public function tearDown(): void

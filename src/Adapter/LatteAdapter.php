@@ -1,6 +1,6 @@
 <?php
 /**
- * Volcanus libraries for PHP
+ * Volcanus libraries for PHP 8.1~
  *
  * @copyright k-holy <k.holy74@gmail.com>
  * @license The MIT License (MIT)
@@ -22,7 +22,7 @@ class LatteAdapter implements AdapterInterface
     /**
      * @var array 設定値
      */
-    private $config = [
+    private array $config = [
         'baseDir' => null,
         'tempDirectory' => null,
         'autoRefresh' => null,
@@ -32,12 +32,12 @@ class LatteAdapter implements AdapterInterface
     /**
      * @var Engine
      */
-    public $latte;
+    public Engine $latte;
 
     /**
-     * @var FileLoader
+     * @var FileLoader|null
      */
-    private $fileLoader;
+    private ?FileLoader $fileLoader = null;
 
     /**
      * コンストラクタ
@@ -53,13 +53,13 @@ class LatteAdapter implements AdapterInterface
     /**
      * オブジェクトを初期化します。
      *
-     * @param Engine|null $latte
+     * @param mixed|null $engine
      * @param array $configurations 設定オプション
      * @return self
      */
-    public function initialize($latte = null, array $configurations = []): AdapterInterface
+    public function initialize(mixed $engine = null, array $configurations = []): AdapterInterface
     {
-        $this->setLatte($latte ?? new Engine());
+        $this->setLatte($engine ?? new Engine());
         foreach (array_keys($this->config) as $name) {
             $this->config[$name] = null;
         }
@@ -82,7 +82,7 @@ class LatteAdapter implements AdapterInterface
      * @param string $name 設定名
      * @return mixed 設定値
      */
-    public function getConfig(string $name)
+    public function getConfig(string $name): mixed
     {
         switch ($name) {
             // \Latte\Engine は設定値の取得用メソッドを提供していないので…
@@ -104,7 +104,7 @@ class LatteAdapter implements AdapterInterface
      * @param mixed $value 設定値
      * @return self
      */
-    public function setConfig(string $name, $value): AdapterInterface
+    public function setConfig(string $name, mixed $value): AdapterInterface
     {
         switch ($name) {
             case 'baseDir':
