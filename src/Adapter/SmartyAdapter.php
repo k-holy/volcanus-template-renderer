@@ -8,6 +8,9 @@
 
 namespace Volcanus\TemplateRenderer\Adapter;
 
+use Smarty\Smarty;
+use Smarty\Exception as SmartyException;
+
 /**
  * Adapter for Smarty (https://www.smarty.net)
  *
@@ -22,17 +25,17 @@ class SmartyAdapter implements AdapterInterface
     private array $config;
 
     /**
-     * @var \Smarty
+     * @var Smarty
      */
-    public \Smarty $smarty;
+    public Smarty $smarty;
 
     /**
      * コンストラクタ
      *
-     * @param \Smarty|null $smarty
+     * @param Smarty|null $smarty
      * @param array $configurations 設定オプション
      */
-    public function __construct(\Smarty $smarty = null, array $configurations = [])
+    public function __construct(?Smarty $smarty = null, array $configurations = [])
     {
         $this->initialize($smarty, $configurations);
     }
@@ -46,7 +49,7 @@ class SmartyAdapter implements AdapterInterface
      */
     public function initialize(mixed $engine = null, array $configurations = []): AdapterInterface
     {
-        $this->setSmarty($engine ?? new \Smarty());
+        $this->setSmarty($engine ?? new Smarty());
         $this->config = [
             'defaultLayout' => null,
         ];
@@ -58,7 +61,7 @@ class SmartyAdapter implements AdapterInterface
         return $this;
     }
 
-    private function setSmarty(\Smarty $smarty)
+    private function setSmarty(Smarty $smarty): void
     {
         $this->smarty = $smarty;
     }
@@ -71,22 +74,29 @@ class SmartyAdapter implements AdapterInterface
      */
     public function getConfig(string $name): mixed
     {
-        if (property_exists($this->smarty, $name)) {
-            return $this->smarty->{$name};
-        }
         switch ($name) {
+            case 'caching':
+                return $this->smarty->caching;
+            case 'escape_html':
+                return $this->smarty->escape_html;
+            case 'force_compile':
+                return $this->smarty->force_compile;
+            case 'use_sub_dirs':
+                return $this->smarty->use_sub_dirs;
+            case 'left_delimiter':
+                return $this->smarty->getLeftDelimiter();
+            case 'right_delimiter':
+                return $this->smarty->getRightDelimiter();
             case 'template_dir':
                 return $this->smarty->getTemplateDir();
             case 'config_dir':
                 return $this->smarty->getConfigDir();
-            case 'plugins_dir':
-                return $this->smarty->getPluginsDir();
             case 'compile_dir':
                 return $this->smarty->getCompileDir();
             case 'cache_dir':
                 return $this->smarty->getCacheDir();
             case 'charset':
-                return \Smarty::$_CHARSET;
+                return Smarty::$_CHARSET;
             case 'defaultLayout':
                 return $this->config[$name];
         }
@@ -111,9 +121,6 @@ class SmartyAdapter implements AdapterInterface
             case 'config_dir':
                 $this->smarty->setConfigDir($value);
                 break;
-            case 'plugins_dir':
-                $this->smarty->setPluginsDir($value);
-                break;
             case 'compile_dir':
                 $this->smarty->setCompileDir($value);
                 break;
@@ -121,9 +128,13 @@ class SmartyAdapter implements AdapterInterface
                 $this->smarty->setCacheDir($value);
                 break;
             case 'left_delimiter':
+                $this->smarty->setLeftDelimiter($value);
+                break;
             case 'right_delimiter':
+                $this->smarty->setRightDelimiter($value);
+                break;
             case 'default_modifiers':
-                $this->smarty->{$name} = $value;
+                $this->smarty->setDefaultModifiers($value);
                 break;
             case 'caching':
             case 'force_compile':
@@ -132,7 +143,7 @@ class SmartyAdapter implements AdapterInterface
                 $this->smarty->{$name} = (bool)$value;
                 break;
             case 'charset':
-                \Smarty::$_CHARSET = $value;
+                Smarty::$_CHARSET = $value;
                 break;
             case 'defaultLayout':
                 $this->config[$name] = $value;
@@ -151,7 +162,7 @@ class SmartyAdapter implements AdapterInterface
      * @param string $view テンプレートファイルのパス
      * @param array $data テンプレート変数の配列
      * @return string
-     * @throws \SmartyException
+     * @throws SmartyException
      */
     public function fetch(string $view, array $data = []): string
     {

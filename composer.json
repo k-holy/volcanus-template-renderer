@@ -3,7 +3,7 @@
   "homepage": "https://github.com/k-holy/volcanus-template-renderer",
   "type": "library",
   "description": "renderer class for some template systems",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "license": "MIT",
   "authors": [
     {
@@ -17,15 +17,15 @@
     }
   },
   "require": {
-    "php": "^8.1",
+    "php": "^8.3",
     "psr/http-message": "~1.0"
   },
   "require-dev": {
     "ext-simplexml": "*",
-    "phpunit/phpunit": "^9.5",
-    "smarty/smarty": "^4.3",
-    "phptal/phptal": "^1.7",
-    "latte/latte": "^3.0",
-    "laminas/laminas-diactoros": "^2.9"
+    "phpunit/phpunit": "^11.5",
+    "smarty/smarty": "^5.8",
+    "phptal/phptal": "^1.11",
+    "latte/latte": "^3.1",
+    "laminas/laminas-diactoros": "^3.9"
   }
 }
