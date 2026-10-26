@@ -28,10 +28,10 @@ class RendererTest extends TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $adapter->expects($this->any())
             ->method('setConfig')
-            ->will($this->returnValue($adapter));
+            ->willReturn($adapter);
         $adapter->expects($this->any())
             ->method('getConfig')
-            ->will($this->returnValue('get foo value'));
+            ->willReturn('get foo value');
 
         $renderer = new Renderer($adapter);
         $this->assertSame($renderer, $renderer->config('foo', 'value'));
@@ -55,11 +55,11 @@ class RendererTest extends TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function (
+            ->willReturnCallback(function (
                 $view, $data
             ) {
                 return $data['name'];
-            }));
+            });
         $renderer = new Renderer($adapter);
         $this->assertEquals('foo', $renderer->fetch('/path/to/template', ['name' => 'foo']));
     }
@@ -70,11 +70,11 @@ class RendererTest extends TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function (
+            ->willReturnCallback(function (
                 $view, $data
             ) {
                 return $data['name'];
-            }));
+            });
         $renderer = new Renderer($adapter);
         $renderer->assign('name', 'foo');
         $this->assertEquals('foo', $renderer->fetch('/path/to/template'));
@@ -97,9 +97,9 @@ class RendererTest extends TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function ($view, $data) {
+            ->willReturnCallback(function ($view, $data) {
                 return $data['name'];
-            }));
+            });
         $renderer = new Renderer($adapter);
         ob_start();
         $renderer->render('/path/to/template', ['name' => 'foo']);
@@ -113,9 +113,9 @@ class RendererTest extends TestCase
         $adapter = $this->createMock(AdapterInterface::class);
         $adapter->expects($this->any())
             ->method('fetch')
-            ->will($this->returnCallback(function ($view, $data) {
+            ->willReturnCallback(function ($view, $data) {
                 return $data['name'];
-            }));
+            });
         $renderer = new Renderer($adapter);
         $renderer->assign('name', 'foo');
         $response = new HtmlResponse('');

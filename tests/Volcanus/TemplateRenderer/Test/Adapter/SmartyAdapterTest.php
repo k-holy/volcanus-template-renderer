@@ -10,6 +10,8 @@ namespace Volcanus\TemplateRenderer\Test\Adapter;
 
 use PHPUnit\Framework\TestCase;
 use Volcanus\TemplateRenderer\Adapter\SmartyAdapter;
+use Smarty\Smarty;
+use Smarty\Exception as SmartyException;
 
 /**
  * SmartyAdapterTest
@@ -117,7 +119,7 @@ TEMPLATE
 
     public function testConstructWithEngineAndGetChangedConfiguration()
     {
-        $smarty = new \Smarty();
+        $smarty = new Smarty();
         $adapter = new SmartyAdapter($smarty);
         $smarty->escape_html = true;
         $this->assertTrue($adapter->getConfig('escape_html'));
@@ -196,7 +198,7 @@ TEMPLATE
     }
 
     /**
-     * @throws \SmartyException
+     * @throws SmartyException
      */
     public function testDefaultLayout()
     {
