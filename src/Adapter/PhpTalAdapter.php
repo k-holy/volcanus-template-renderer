@@ -28,7 +28,7 @@ class PhpTalAdapter implements AdapterInterface
      * @param array $configurations 設定オプション
      * @throws \PHPTAL_ConfigurationException
      */
-    public function __construct(\PHPTAL $phptal = null, array $configurations = [])
+    public function __construct(?\PHPTAL $phptal = null, array $configurations = [])
     {
         $this->initialize($phptal, $configurations);
     }
@@ -52,7 +52,7 @@ class PhpTalAdapter implements AdapterInterface
         return $this;
     }
 
-    private function setPhpTal(\PHPTAL $phptal)
+    private function setPhpTal(\PHPTAL $phptal): void
     {
         $this->phptal = $phptal;
     }

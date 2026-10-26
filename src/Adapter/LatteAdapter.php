@@ -9,6 +9,7 @@
 namespace Volcanus\TemplateRenderer\Adapter;
 
 use Latte\Engine;
+use Latte\Feature;
 use Latte\Loaders\FileLoader;
 
 /**
@@ -45,7 +46,7 @@ class LatteAdapter implements AdapterInterface
      * @param Engine|null $latte
      * @param array $configurations 設定オプション
      */
-    public function __construct(Engine $latte = null, array $configurations = [])
+    public function __construct(?Engine $latte = null, array $configurations = [])
     {
         $this->initialize($latte, $configurations);
     }
@@ -71,7 +72,7 @@ class LatteAdapter implements AdapterInterface
         return $this;
     }
 
-    private function setLatte(Engine $latte)
+    private function setLatte(Engine $latte): void
     {
         $this->latte = $latte;
     }
@@ -112,7 +113,7 @@ class LatteAdapter implements AdapterInterface
                 break;
             case 'tempDirectory':
                 $this->config[$name] = $value;
-                $this->latte->setTempDirectory($value);
+                $this->latte->setCacheDirectory($value);
                 break;
             case 'autoRefresh':
                 $this->config[$name] = $value;
@@ -120,7 +121,7 @@ class LatteAdapter implements AdapterInterface
                 break;
             case 'strictTypes':
                 $this->config[$name] = $value;
-                $this->latte->setStrictTypes($value);
+                $this->latte->setFeature(Feature::StrictTypes, $value);
                 break;
             default:
                 throw new \InvalidArgumentException(
